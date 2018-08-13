@@ -1,0 +1,7 @@
+scala> 1 + 2
+res0: Int = 3
+
+it means result 0.
+Type of expression and its resulting value(Int)
+
+page-52
