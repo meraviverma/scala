@@ -1,7 +1,29 @@
-scala> 1 + 2
-res0: Int = 3
+What is Trait in scala?
+-----------------------------------
+A trait is like an interface with a partial implementation. In scala, trait is a collection of abstract and non-abstract methods. 
+You can create trait that can have all abstract methods or some abstract and some non-abstract methods.
 
-it means result 0.
-Type of expression and its resulting value(Int)
+If a class extends a trait but does not implement the members declared in that trait, it must be declared abstract. Let's see an example
 
+If a class implements multiple traits, it will extend the first trait, class, abstract class. 
+with keyword is used to extend rest of the traits.
+
+trait Printable{  
+    def print()  
+}  
+  
+trait Showable{  
+   def show()  
+}  
+  
+class A6 extends Printable with Showable{  
+    def print(){  
+        println("This is printable")  
+    }  
+    def show(){  
+        println("This is showable");  
+    }  
+}  
+
+use "extends" keyword to extend first trait then use "with" keyword for other trait
 page-52
