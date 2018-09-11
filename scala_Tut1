@@ -27,3 +27,7 @@ class A6 extends Printable with Showable{
 
 use "extends" keyword to extend first trait then use "with" keyword for other trait
 page-52
+
+SCala covert epoc date to human readable date:
+-----------------------------------------------------
+println( DateTimeFormat.forPattern("YYYY-MM-dd").print(1536648835000L))
