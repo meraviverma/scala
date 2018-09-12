@@ -1,3 +1,17 @@
+Function are first class citizens:
+----------------------------------------
+> We can assign functions to a value.
+> We can pass then as a parameter.
+> We can return them from a high order function.
+
+We can create values usign literal. Ex val s="Hello"
+
+val l=5 | val l:Long=5 | val l=5:Long
+
+can you create a function value using literal?
+
+
+
 Anonymous Function
 ----------------------------
 You don't have to give name to each function, just like we don't have to give a name to eac number.
