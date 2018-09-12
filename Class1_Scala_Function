@@ -1,0 +1,42 @@
+Anonymous Function
+----------------------------
+You don't have to give name to each function, just like we don't have to give a name to eac number.
+
+(x: Double) => 3 * x
+
+val triple = (x: Double) => 3 * x
+
+This is equivalent to def triple(x: Double) = 3 * x
+
+
+Closure in scala
+----------------------------------
+A Closure is a function. Like any other function a closure can be pure or impure.It can be named or unnamed. 
+
+Example: 
+def gethike(salary: Double)=salary*p/100
+
+What is p here, P is a free variable here. It is not defined in the function.Function doesnot understand the value of P.
+
+A Function that uses one or more free variable is know as closure.
+
+where will copilerfind p? It looks for P in nearest local lexical  env where function was defined.We can decalre p outside the 
+function.
+
+val p=10
+def gethike(salary: Double)=salary*p/100
+
+Closure takes the recent value of P i.e it takes recent value of free varaible.
+
+Q)Is closure Pure?
+Ans: No closure is not pure.As free varaible is Var. If varaible is val then it is pure.
+Closure cna be pure or impure depending on the varaible declared as either val or var.
+
+Q)How does a change in the value of free variable impact the closure?
+
+Q)What happens when closure modifies the free variable?
+Ans:If closure sets the free variable the changes are seen outside the closure.
+
+Q)Why closure? What are the benefits?
+In function programming we can pass function and return functions.
+
