@@ -1,0 +1,78 @@
+Scala Collection
+--------------------------------------------
+1)All collections extend Iterable trait.
+2)The three major categories of collections are sequences, sets, and maps.
+3)Scala has mutable and immutable versions of most collections.
+4)A Scala list is either empty, or it has a head and a tail which is again a list.
+5)Sets are unordered collections.
+6)Use a LinkedHashSet to retain the insertion order or a SortedSet to iterate in sorted order.
+7)+ adds an element to an unordered collection; +: and :+ prepend or append to a sequence; ++ concatenates two collections; - and -- remove elements.
+8)+ adds an element to an unordered collection; +: and :+ prepend or append to a sequence; ++ concatenates two collections; - and -- remove elements.
+9) The Iterable and Seq traits have dozens of useful methods for common operations. Check them out before writing tedious loops.
+10)Mapping, folding, and zipping are useful techniques for applying a function or operation to the elements of a collection.
+
+List
+------------------
+In Scala, a list is either Nil (that is, empty) or an object with a head element and a
+tail that is again a list. For example, consider the list
+val digits = List(4, 2)
+
+The :: operator makes a new list from a given head and tail. For example,
+9 :: List(4, 2)
+
+Sets
+-------------
+A set is a collection of distinct elements. Trying to add an existing element has no effect. 
+For example,
+Set(2, 0, 1) + 1
+is the same as Set(2, 0, 1).
+
+Unlike lists, sets do not retain the order in which elements are inserted.
+By default,sets are implemented as hash sets in which elements are organized by the value
+of the hashCode method.
+
+Finding an element in a hash set is much faster than in an array or list.
+A linked hash set remembers the order in which elements were inserted. It keeps a linked list for this purpose.
+
+Generally, + is used for adding an element to an unordered collection, while +:
+and :+ add an element to the beginning or end of an ordered collection.
+
+Mapping a function
+--------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

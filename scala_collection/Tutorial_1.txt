@@ -1,0 +1,52 @@
+Scala collections systematically distinguish between mutable and immutable collections. 
+Mutable Collection
+---------------------
+A mutable collection can be updated or extended in place. 
+This means you can change, add, or remove elements of a collection as a side effect. 
+Immutable Collection
+-----------------------
+Immutable collections, by contrast, never change. 
+You have still operations that simulate additions, removals, or updates, but those operations will in each case return a new collection and leave the old collection unchanged.
+
+All collection classes are found in the package scala.collection or one of its sub-packages mutable, immutable, and generic
+
+A collection in package scala.collection.immutable is guaranteed to be immutable for everyone. Such a collection will never change after it is created. 
+
+A collection in package scala.collection.mutable is known to have some operations that change the collection in place.
+
+NOTE:"By default, Scala always picks immutable collections."
+
+Traversable(1, 2, 3)
+Iterable("x", "y", "z")
+Map("x" -> 24, "y" -> 25, "z" -> 26)
+Set(Color.red, Color.green, Color.blue)
+SortedSet("hello", "world")
+Buffer(x, y, z)
+IndexedSeq(1.0, 2.0)
+LinearSeq(a, b, c)
+
+List(1, 2, 3)
+HashMap("x" -> 24, "y" -> 25, "z" -> 26)
+
+
+Traversable
+----------------
+Addition: ++
+Map:	map,flatMap,collection
+Conversion:	toArray, toList, toIterable, toSeq, toIndexedSeq, toStream, toSet, toMap, 
+Copying operations:	copyToBuffer and copyToArray
+size Info:	isEmpty, nonEmpty, size, and hasDefiniteSize
+Element retrieval operations: 	 head, last, headOption, lastOption, and find
+Sub-collection retrieval operations:	 tail, init, slice, take, drop, takeWhile, dropWhile, filter, filterNot, withFilter
+Subdivision operations: splitAt, span, partition, groupBy
+Element tests: exists, forall, count
+Folds:	 foldLeft, foldRight, /:, :\, reduceLeft, reduceRight
+Specific folds:	 sum, product, min, max
+String operations:	 mkString, addString, stringPrefix
+Index search operations: indexOf, lastIndexOf, indexOfSlice, lastIndexOfSlice, indexWhere, lastIndexWhere, segmentLength, prefixLength
+Addition operations:	 +:, :+, padTo
+Update operations:	 updated, patch
+Sorting operations: sorted, sortWith, sortBy
+Reversal operations:	 reverse, reverseIterator, reverseMap
+Comparisons:	 startsWith, endsWith, contains, containsSlice, corresponds
+Multiset operations:	 intersect, diff, union, distinct

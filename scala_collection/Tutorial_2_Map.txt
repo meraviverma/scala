@@ -1,0 +1,97 @@
+Map is a collection of key/value pairs.
+Map can be mutable map or immutable map.
+By Default you get a hash map, but you can also get a tree map.
+
+1)Constructing a Map
+-----------------------------------------------------------------
+val score=Map("Ram"->10,"Ravi"->100,"Sham"->200)
+
+This will create a immutable Map but if you want your map to be mutable then
+we need to use
+
+val score=scala.collection.mutable.Map("Ram"->10,"Ravi"->100,"Sham"->200)
+
+2)Create a Empty/blank Map
+-----------------------------------------------------------------
+val scores=scala.collection.mutable.Map[String,Int]()
+
+We can also define Map as:
+val score=Map(("Ram",10),("Sam",100))
+
+3)Accessing Map
+-----------------------------------------------------------------
+val ramscore=scores("Ram")
+
+Note: If a Map doesnot contain Key it will throw exception.
+
+To check whether there is a key with the given value, call the contains method:
+val bobsScore = if (scores.contains("Ram")) scores("Ram") else 0
+
+Since this call combination is so common, there is a shortcut:
+val bobsScore = scores.getOrElse("Ram", 0)
+
+
+4)Updating Map Values
+------------------------------------------------------------------------
+In a Mutable map we can update a map value
+scores("Bob") = 10
+
+Alternatively, you can use the += operation to add multiple associations:
+scores += ("Bob" -> 10, "Fred" -> 7)
+
+To remove a key and its associated value, use the -= operator:
+scores -= "Alice"
+
+You can’t update an immutable map, but you can do something that’s just as
+useful—obtain a new map that has the desired update:
+
+val newScores = scores + ("Bob" -> 10, "Fred" -> 7) // New map with update
+
+scores += ("Bob" -> 10, "Fred" -> 7)
+
+Remove an element from Map:
+
+scores = scores - "Alice"
+or
+scores -= "Alice"
+
+5)Sorted Map
+------------------------------------------------------------------------
+Scala gives you a map based on a hash table because it is usually more efficient.
+If you need to visit the keys in sorted order, use a SortedMap instead.
+
+val sortmap=scala.collection.mutable.SortedMap("Ravi"->2,"Mohan"->3)
+//output
+TreeMap(Mohan -> 3, Ravi -> 2)
+
+Tuple
+--------------------------------------------------------------------------------------
+val t=(1,3.14,"Fred")
+
+We can access its component using _1,_2,_3
+
+val second=t._2
+
+"New York".partition(_.isUpper) // gives the pair ("NY","ew ork")
+
+Zipping
+------------------------------------------------------------------------
+Zip bundle together 
+
+val symbols = Array("<", "-", ">")
+val counts = Array(2, 10, 2)
+val pairs = symbols.zip(counts)
+
+Array(("<", 2), ("-", 10), (">", 2))
+
+"Hello".zip("world")
+
+It will produce vector
+
+Vector((H,w), (e,o), (l,r), (l,l), (o,d))
+
+We can convert it to map using .toMap
+"Hello".zip("world").toMap
+
+Map(H -> w, e -> o, l -> l, o -> d)
+
