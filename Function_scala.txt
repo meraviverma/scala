@@ -1,0 +1,552 @@
+﻿Scala supports both Object-oriented and functional programming language. Its runs for JVM(Java Virtual Machine).
+----------------------------------------------------
+PURE FUNCTION
+----------------------------------------------------
+A Pure function is a function that has no side effect.
+In functional programming a
+pure function is one that:
+• Has one or more input parameters
+• Performs calculations using only the input parameters
+• Returns a value
+• Always returns the same value for the same input
+• Does not use or affect any data outside the function
+• Is not affected by any data outside the function
+
+----------------------------------------------------
+Syntax: Defining an Input-less Function
+----------------------------------------------------
+def <identifier> = <expression>
+
+scala> def hi="hi"
+hi: String
+
+scala> hi
+res0: String = hi
+----------------------------------------------------
+Syntax: Defining a Function with a Return Type
+----------------------------------------------------
+def <identifier>: <type> = <expression>
+
+scala> def hi:String="hi"
+hi: String
+
+scala> hi
+res1: String = hi
+----------------------------------------------------
+Syntax: Defining a Function
+----------------------------------------------------
+def <identifier>(<identifier>: <type>[, ... ]): <type> = <expression>
+
+scala> def multiply(x:Int,y:Int):Int={x*y}
+multiply: (x: Int, y: Int)Int
+
+scala> multiply(2,4)
+res2: Int = 8
+
+scala> def divd(x:Int,y:Int):Int={x/y}
+divd: (x: Int, y: Int)Int
+
+scala> multiply(2,0)
+java.lang.ArithmeticException: / by zero
+  at .divd(<console>:11)
+  ... 28 elided
+
+----------------------------------------------------
+Procedures
+----------------------------------------------------
+A procedure is a function that doesn’t have a return value. Any function that ends with
+a statement, such as a println() call, is also a procedure.
+
+If you have a simple function without an explicit return type that ends with a statement, the Scala compiler will infer
+the return type of the function to be Unit, the lack of a value.
+
+scala> def log(d: Double) = println(f"Got value $d%.2f")
+log: (d: Double)Unit
+scala> def log(d: Double): Unit = println(f"Got value $d%.2f")
+log: (d: Double)Unit
+scala> log(2.23535)
+Got value 2.24
+
+Alternate way to define procedure
+
+scala> def log(d: Double) { println(f"Got value $d%.2f") }
+log: (d: Double)Unit
+
+
+----------------------------------------------------
+PROCEDURE
+----------------------------------------------------
+A procedure is a function that doesn’t have a return value. Any function that ends with
+a statement, such as a println() call, is also a procedure.
+
+scala> def log(d:Double):Unit=println(f"Got value $d%.2f")
+log: (d: Double)Unit
+
+scala> log(2.23535)
+Got value 2.24
+
+For procedures greater than a single line, an explicit unit type of Unit will clearly indicate to readers that there is no return value.
+----------------------------------------------------
+Syntax: Defining a Function with Empty Parentheses
+----------------------------------------------------
+def <identifier>()[: <type>] = <expression>
+
+scala> def hi():String="hi"
+hi: ()String
+
+scala> hi
+res7: String = hi
+
+scala> hi()
+res8: String = hi
+
+Syntax: Invoking a Function with an Expression Block
+<function identifier> <expression block>
+
+One example where using an expression block to invoke a function may be preferable is when you have to send a calculated value to the function. Instead of calculating the amount and storing it in local values to be passed to the function, you can do the calculations inside the expression block.
+----------------------------------------------------
+Recursive Functions
+----------------------------------------------------
+A recursive function is one that may invoke itself, preferably with some type of parameter or external condition that will be checked to avoid an infinite loop of function invocation.
+
+scala> def power(x:Int,y:Int):Long={
+     | if(y>=1)x*power(x,y-1)
+     | else 1
+     | }
+power: (x: Int, y: Int)Long
+
+scala> power(1,2)
+res9: Long = 1
+
+scala> power(2,2)
+res10: Long = 4
+
+One problem with using recursive functions is running into the dreaded “Stack Overflow”
+error, where invoking a recursive function too many times eventually uses up all
+of the allocated stack space.
+
+To prevent this scenario, the Scala compiler can optimize some recursive functions with
+tail-recursion so that recursive calls do not use additional stack space.
+
+With tailrecursion–
+optimized functions, recursive invocation doesn’t create new stack space but
+instead uses the current function’s stack space.
+
+To mark a function as intended for tail-recursion, add the text @annotation.tailrec
+before the function definition
+
+----------------------------------------------------
+Q) What is tail-recursion ?
+----------------------------------------------------
+scala> @annotation.tailrec
+     | def power(x: Int, n: Int): Long = {
+     | if (n >= 1) x * power(x, n-1)
+     | else 1
+     | }
+<console>:14: error: could not optimize @tailrec annotated method power: it contains a recursive call not in tail position
+       if (n >= 1) x * power(x, n-1)
+                     
+Ah, the function couldn’t be optimized because the recursive call is not the last statement
+in the function.
+
+scala> @annotation.tailrec
+     |  def power(x: Int, n: Int, t: Int = 1): Int = {
+     |  if (n < 1) t
+     | else power(x, n-1, x*t)
+     |  }
+power: (x: Int, n: Int, t: Int)Int
+
+The “tailrec” annotation and successful compile guarantees that the function
+will be optimized with tail-recursion, so that each successive call will not add more stack
+frames.
+
+
+----------------------------------------------------
+Nested Functions
+----------------------------------------------------
+
+defining an internal function inside another function
+
+scala> def max(a:Int,b:Int,c:Int)={
+     | def max(x:Int,y:Int)=if(x>y)x else y
+     | max(a,max(b,c))
+     | }
+max: (a: Int, b: Int, c: Int)Int
+
+scala> max(2,3,4)
+res12: Int = 4
+----------------------------------------------------
+Syntax: Specifying a Parameter by Name
+----------------------------------------------------
+<function name>(<parameter> = <value>)
+
+scala> def greet(prefix:String,name:String)=s"$prefix $name"
+greet: (prefix: String, name: String)String
+
+scala> val greeting=greet("Mr","Ravi")
+greeting: String = Mr Ravi
+
+Syntax: Specifying a Default Value for a Function Parameter
+def <identifier>(<identifier>: <type> = <value>): <type>
+
+scala> def greet(prefix:String=" ",name:String)=s"$prefix $name"
+greet: (prefix: String, name: String)String
+
+scala> val greeting=greet(name="Ravi")
+greeting: String = "  Ravi"
+----------------------------------------------------
+Vararg Parameters
+----------------------------------------------------
+A function parameter that can match zero or more arguments from the caller.
+
+vararg parameters, so you can define a function with a variable number of input arguments. The vararg parameter cannot be followed by a nonvararg
+parameter because there would be no way to distinguish them.
+
+scala> def sum(items:Int*):Int={
+     | var total=0
+     | for(i <- items)total += i
+     | total
+     | }
+sum: (items: Int*)Int
+
+scala> sum(10,20)
+res0: Int = 30
+
+scala> sum(10,10,20)
+res1: Int = 40
+
+scala> def mul(items:Int*):Int={
+     | var total=1
+     | for(i<-items)total=i*total
+     | total
+     | }
+mul: (items: Int*)Int
+
+scala> mul(2,3,4)
+res2: Int = 24
+
+scala> mul(2,3,4,1)
+res3: Int = 24
+
+scala> mul(2,3,4,1,2)
+res4: Int = 48
+----------------------------------------------------
+Parameter Groups
+----------------------------------------------------
+Scala provides the option to break these into groups of parameters, each separated with their own parentheses.
+
+scala> def max(x: Int)(y: Int) = if (x > y) x else y
+max: (x: Int)(y: Int)Int
+scala> val larger = max(20)(39)
+larger: Int = 39
+
+----------------------------------------------------
+Function as First - Class
+----------------------------------------------------
+Function as first class means they are not only declared and invoked but can be used
+in every segment of the language as just another data type.
+
+A first-class function may,
+as with other data types, be created in literal form without ever having been assigned
+an identifier; be stored in a container such as a value, variable, or data structure; and be
+used as a parameter to another function or used as the return value from another function.
+
+----------------------------------------------------
+Higher-Order Function
+----------------------------------------------------
+Higher order functions take other functions as parameters or return a function as a result. 
+
+Example : map() reduce()
+
+This is possible because functions are first-class values in Scala.
+
+Higher order function is a function that either takes a function as argument or returns a function. In other words we can say a function which works with function is called higher order function.
+
+Functions that accept other functions as parameters and/or use functions as return values are known as higher-order functions.
+
+two of the most famous higher-order functions, map() and reduce().
+
+scala> val salary=List(10,20,30)
+salary: List[Int] = List(10, 20, 30)
+
+scala> val doublesal=(x:Int)=>x*2
+doublesal: Int => Int = $$Lambda$1105/1125059683@25a52a60
+
+scala> val newsalary=salary.map(doublesal)
+newsalary: List[Int] = List(20, 40, 60)
+
+or
+
+val salaries = Seq(20000, 70000, 40000)
+val newSalaries = salaries.map(x => x * 2) // List(40000, 140000, 80000)
+
+
+or
+
+val salaries = Seq(20000, 70000, 40000)
+val newSalaries = salaries.map(_ * 2)
+
+or
+
+scala> def dsal(x:Int):Int={x*2}
+dsal: (x: Int)Int
+
+scala> val news=salary.map(dsal)
+news: List[Int] = List(20, 40, 60)
+
+Scala function that takes another function as argument
+--------------------------------------------------------------
+
+scala> def doubler(i:Int) = i*2
+doubler: (i: Int)Int
+
+scala> def tripler(i:Int) = i*3
+tripler: (i: Int)Int
+
+scala> def apply(f:Int => Int,x:Int) = f(x)
+apply: (f: Int => Int, x: Int)Int
+
+scala> apply(doubler,5)
+res2: Int = 10
+
+scala> apply(tripler,5)
+res3: Int = 15
+
+Scala function that returns another function
+----------------------------------------------------
+scala>  def getOps(c:Int) = {
+     |         def doubler(x:Int) =  x * 2
+     |         def tripler(x:Int) =  x * 3
+     |         if(c > 0)
+     |             doubler _
+     |         else
+     |             tripler _
+     |         }
+getOps: (c: Int)Int => Int
+
+scala> getOps(2)
+res4: Int => Int = $$Lambda$1112/1489504599@5f1db390
+
+scala> val d= getOps(2)
+d: Int => Int = $$Lambda$1112/1489504599@5f1db390
+
+scala> d(2)
+res5: Int = 4
+
+scala> d(4)
+res6: Int = 8
+
+----------------------------------------------------
+Partially Applied Function
+----------------------------------------------------
+1)All the argument are not available to the function.
+You don't need to pass all the argument to the function.
+2)A new partial function is created.
+
+Example:
+------------
+scala> def billing(ser:Int,vat:Int,netbill:Int):Int={
+     | netbill + (ser*netbill)/100+(vat*netbill)/100
+     | }
+billing: (ser: Int, vat: Int, netbill: Int)Int
+
+scala> val mybillcal=billing(12,20,_:Int)
+mybillcal: Int => Int = $$Lambda$1147/1754583693@27de9336
+
+scala> mybillcal(120)
+res5: Int = 158
+
+val mybillcal=billing(12,20,_:Int)
+
+We can see how we have used partial applied function, We have fixed the value of service charge and vat and left netbill to be open for 
+passing parameter.
+
+scala> val simplelist=List(2,3,4,5,6)
+simplelist: List[Int] = List(2, 3, 4, 5, 6)
+
+scala> simplelist.foreach(println _)
+2
+3
+4
+5
+6
+
+
+object GuessGame {
+  val number=25+scala.util.Random.nextInt(50)
+  def validateGuess(lower:Int,guess:Int,higher:Int,message:String)={
+    if(lower <= guess && guess <= higher) println(message)
+    else println(s"You lost the number was $number")
+  }
+  
+  val stage1=validateGuess(number-25,_:Int,number+25,"You won proceed to stage 2")
+  val stage2=validateGuess(number-15,_:Int,number+15,"You won proceed to stage 3")
+  val stage3=validateGuess(number-5,_:Int,number+5,s"You won the number was $number")
+
+  override def toString={
+    "Guess a number between 0 to 100"
+  }
+}
+
+scala> def factor(x:Int,y:Int)=x%y==0
+factor: (x: Int, y: Int)Boolean
+
+scala> factor(3,4)
+res12: Boolean = false
+
+scala> val f=factor _
+f: (Int, Int) => Boolean = $$Lambda$1175/1610048287@41c96a67
+
+scala> f(4,1)
+res13: Boolean = true
+
+scala> val mult3=factor(3,_:Int) // We have changed it here and one argument is fixed
+mult3: Int => Boolean = $$Lambda$1176/916182474@1f1d7c52
+
+scala> val y=mult3(21)
+y: Boolean = false 
+----------------------------------------------------
+Currying Function
+----------------------------------------------------
+Currying is the technique  of transforming a function
+that takes multiple argument into a function that takes a single argument.
+
+Let’s look at an example. This function takes two arguments:
+val mul = (x: Int, y: Int) => x * y
+This function takes one argument, yielding a function that takes one argument:
+val mulOneAtATime = (x: Int) => ((y: Int) => x * y)
+
+When you use def, there is a shortcut for defining such curried methods in Scala:
+def mulOneAtATime(x: Int)(y: Int) = x * y
+
+1)Transforming function into chain of calls.
+2)Scala currying
+
+(Int,Int)=>Int to Int=>Int=>Int
+
+object DemoCurr {
+  
+  def add(x: Int,y:Int)=x+y
+  
+  def add2(x : Int) = (y : Int)=> x + y
+  
+  def add3(x:Int) (y:Int)= x + y // This declaration of currying function is given by scala.
+  
+  def main(args:Array[String]){
+    println(add(20,10));
+    
+    println(add2(20)(10));
+    
+    val sum40= add2(40); // It is value of x
+    
+    println(sum40(100)); //next time when we call 100 it is passed to y as 100
+    
+    println(add3(100)(200))
+    
+    val sum50= add3(50)_; //_ means that we will pass an argument which we will pass later. 
+                          //add3(50) in this case will give error we need to pass argument
+    
+    println(sum50(400))
+  }
+}
+--------------------------------------------------------------------------------------------------------
+Q) What is difference between partial function and partial applied function
+--------------------------------------------------------------------------------------------------------
+A partial function, as opposed to a total function, only accepts a partial amount of all possible input values. 
+A partially applied function is a regular function that has been partially invoked, and remains to be fully invoked (if ever) in the future.
+
+----------------------------------------------------
+declarative programming
+----------------------------------------------------
+A caller can specify what should be done and leave the higher order functions to handle the actual logic flow.
+This is called declarative programming.
+
+Where as reverse is called Imperative programming where wherein the logic flow of an operation is always explicitly stated.
+----------------------------------------------------
+Closure
+----------------------------------------------------
+A function whose return value depends on variable(s) declared outside it, is a closure.
+
+scala> var c=7
+c: Int = 7
+scala> val sum1=(a:Int,b:Int)=>(a+b)*c
+sum1: (Int, Int) => Int = $$Lambda$1103/1497170291@4a0a93ce
+
+scala> sum1(2,3)
+res3: Int = 35
+
+So, while ‘sum’ is trivially closed over itself, ‘sum1’ refers to ‘c’ every time we call it, and reads its current value. Let’s try changing the value of c:
+
+scala> c=8
+c: Int = 8
+We changed ‘c’ from 7 to 8. Let’s try calling sum1 again:
+
+scala> sum1(2,3)
+res5: Int = 40
+
+----------------------------------------------------
+Trait
+----------------------------------------------------
+
+Trait are like partially implemented interface .
+It may contain abstract and non-abstract method .
+It may be that all method are abstract but it should contain atleast one abstract method.
+
+We can never instantiate scala traits , and it has no parameter , but we can have have classes and objects extend it.
+
+Trait with Abstract and Non-Abstract Method
+--------------------------------------------
+
+scala> trait Greeting{
+| def greet()
+| def show(){ //non-abstract
+| println("This is the out method")
+| }
+| }
+defined trait Greeting
+scala> class Rendezvous extends Greeting{
+| def greet(){
+| println("Hello")
+| }
+| }
+defined class Rendezvous
+scala> var r=new Rendezvous()
+r: Rendezvous = Rendezvous@4c6fe482
+scala> r.greet()
+
+Multiple Traits in a Class
+---------------------------------
+For a class extending multiple traits in Scala, we use ‘extends’ for one trait and ‘with’ for the rest.
+
+class ABC extends x with y
+
+scala> trait A{
+| def showA()
+| }
+defined trait A
+scala> trait B{
+| def showB()
+| }
+defined trait B
+scala> class MyClass extends A with B{
+| def showA(){
+| print("A")
+| }
+| def showB(){
+| print("B")
+| }
+| }
+defined class MyClass
+scala> var m=new MyClass()
+m: MyClass = MyClass@3a4181ba
+scala> m.showA() 
+A
+Scala> m.showB()
+B
+
+5. What is the Default access modifier in Scala?
+------------------------------------------------------------------
+Answer:
+“Public” is the default access modifier in Scala.
+
+

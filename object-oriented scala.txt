@@ -1,0 +1,240 @@
+scala> class uber{
+     | val name:String="ravi"
+     | val greet:String=s"Hello from $name"
+     | override def toString=s"User($name)"
+     | }
+defined class uber
+
+scala> val u=new uber
+u: uber = User(ravi)
+
+scala> u.greet
+res14: String = Hello from ravi
+
+Class with parametrized  value
+
+scala> class uber(n:String){
+     | val name:String=n
+     | def greet:String =s"Hello from $name"
+     | override def toString=s"user($name)"
+     | }
+defined class uber
+
+scala> val u = new uber("zenith")
+u: uber = user(zenith)
+
+scala> u.greet
+res15: String = Hello from ravi
+
+The class parameter “n” is used here to initialize the “name” value. However, it could
+not be used inside either of the methods.
+
+scala> class uber(val name: String){
+     | def greet:String=s"Hello from $name"
+     | override def toString=s"User($name)"
+     | }
+defined class uber
+
+scala> val uber=List(new uber("Ravi"),new uber("verma"))
+uber: List[uber] = List(User(Ravi), User(verma))
+
+scala> val size=uber map(_.name.size)
+size: List[Int] = List(4, 5)
+
+scala> val sortname = uber sortBy(_.name)
+sortname: List[uber] = List(User(Ravi), User(verma))
+
+scala> val third=uber find(_.name contains "3")
+third: Option[uber] = None
+
+scala> val third=uber find(_.name contains "4")
+third: Option[uber] = None
+
+scala> val third=uber find(_.name contains "a")
+third: Option[uber] = Some(User(Ravi))
+
+scala> val third=uber find(_.name contains "v")
+third: Option[uber] = Some(User(Ravi))
+
+scala> val third=uber find(_.name contains "e")
+third: Option[uber] = Some(User(verma))
+
+A class can extend up to one other class in Scala with the extends keyword, and override (i.e., supplant) the behavior of an inherited method with
+the override keyword.
+
+The fields and methods in a class can be accessed (if strictly
+necessary) with the this keyword, while the fields and methods in the parent class(es)
+can be accessed with the super keyword.
+
+scala> class A{
+     | def hi="Hello from A"
+     | override def toString=getClass.getName
+     | }
+defined class A
+
+scala> class B extends A
+defined class B
+
+scala> class c extends B{override def hi = "hi C -> " + super.hi}
+defined class c
+
+scala> val hiA=new A().hi
+hiA: String = Hello from A
+
+scala> val hiB=new B().hi
+hiB: String = Hello from A
+
+scala> val hiC=new c().hi
+hiC: String = hi C -> Hello from A
+
+Abstract Class
+--------------------------
+An abstract class is a class designed to be extended by other classes but not instantiated
+itself. 
+Abstract classes are designated so by the abstract keyword, placed before the
+class keyword when defining the class.
+An abstract class can be used to define the core fields and methods required by its
+subclasses without providing an actual implementation.
+
+A class that extends an abstract
+class with declared fields and methods, and is not itself marked as abstract, must provide
+their implementations.
+
+scala> abstract class Car {
+| val year: Int
+| val automatic: Boolean = true
+| def color: String
+| }
+defined class Car
+
+scala> class RedMini(val year: Int) extends Car {
+| def color = "Red"
+| }
+defined class RedMini
+
+Anonymous Classes
+--------------------------
+anonymous class, is a nonreusable and nameless class definition.
+
+To define a one-time anonymous class, instantiate the parent (and potentially abstract)
+class and follow the class name and parameters with curly braces containing your implementation.
+The result is an instance that does extend the given parent class with a
+one-time implementation, but can be used like an instance from a traditional class
+definition.
+
+scala> abstract class Listener { def trigger }
+defined class Listener
+
+scala> val myListener = new Listener{
+     | def trigger {println(s"Trigger at")}
+     | }
+myListener: Listener = $anon$1@13516600
+
+scala> myListener.trigger
+Trigger at
+
+Overloaded Methods
+----------------------
+An overloaded method is a strategy for providing choices to callers. A class may have
+two or more methods with the same name and return value but with different arrangements
+of input parameters.
+
+By overloading a method name with multiple implementations,
+multiple choices for invoking a method with a specific name are made available.
+
+scala> class Printer(msg:String){
+     | def print(s:String):Unit = println(s"msg: $s")
+     | def print(l:Seq[String]):Unit=println(l.mkString(","))
+     | }
+defined class Printer
+
+scala> new Printer("Today's report").print("Foggy")
+msg: Foggy
+
+scala> new Printer("Today's report").print("Foggy" :: "ravi" :: Nil)
+Foggy,ravi
+
+Apply Method In Scala
+-------------------------------
+Methods named “apply,” sometimes referred to as a default method or an injector method,
+can be invoked without the method name.
+
+scala> class Multiplier(factor:Int){
+     | def apply(input:Int)=input*factor
+     | }
+defined class Multiplier
+
+scala> val tripleMe=new Multiplier(3)
+tripleMe: Multiplier = Multiplier@3694461d
+
+scala> val tripled=tripleMe.apply(10)
+tripled: Int = 30
+
+scala> val tripled2=tripleMe(10)
+tripled2: Int = 30
+
+Lazy Values
+-------------------------------
+The fields (values and variables) we have used
+so far in classes are all created when the class is first instantiated. Lazy values, however,
+are only created the first time they are instantiated. You can create a lazy value by adding
+the keyword lazy before the val keyword when defining a value.
+
+------------------------------------------
+Objects, Case Classes, and Traits
+------------------------------------------
+object: An object is a type of class that can have no more than one instance, known in objectoriented
+design as a singleton.
+
+Instead of creating an instance with a new keyword, just
+access the object directly by name.
+
+An object gets automatically instantiated the first
+time it is accessed in a running JVM, which also means that until it is accessed the first
+time it won’t get instantiated.
+
+An object can extend another class,
+making its fields and methods available in a global instance.
+
+Use the object keyword, in place of class, to define an object. Objects do not take any
+parameters (they are automatically instantiated), but you can define the same fields,
+methods, and internal classes as you can with regular classes.
+
+object <identifier> [extends <identifier>] [{ fields, methods, and classes }]
+
+scala> object Hello{ println("in Hello"); def hi="hi"}
+defined object Hello
+
+scala> println(Hello.hi)
+in Hello
+hi
+
+scala> println(Hello.hi)
+hi
+
+The println at the top level of the object is invoked at instantiation/initialization, which
+only occurs when it is accessed for the first time. Repeating the call to the object’s “hi”
+method reused the same global instance so there was no additional initialization.
+
+companion object
+-----------------------
+A companion object is an object that shares the same name
+as a class and is defined together in the same file as the class.
+
+
+Case Classes
+-----------------------
+A case class is an instantiable class that includes several automatically generated methods.
+It also includes an automatically generated companion object with its own automatically
+generated methods.
+
+Traits
+----------------
+A trait is a kind of class that enables multiple inheritance. Classes, case classes, objects,
+and (yes) traits can all extend no more than one class but can extend multiple traits at
+the same time.
+
+traits cannot be instantiated.
+
+trait <identifier> [extends <identifier>] [{ fields, methods, and classes }]
+
