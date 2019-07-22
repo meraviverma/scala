@@ -1,0 +1,56 @@
+Scala is a blend of object-oriented and functional programming concepts in a statically typed language.
+
+scala> var capital=Map("US"->"washington","France"->"Paris")
+capital: scala.collection.immutable.Map[String,String] = Map(US -> washington, France -> Paris)
+
+scala> capital += ("Japan"->"Tokyo")
+
+scala> var capital=Map("US"->"washington","France"->"Paris")
+capital: scala.collection.immutable.Map[String,String] = Map(US -> washington, France -> Paris)
+
+scala> capital += ("Japan"->"Tokyo")
+
+----------------------------------------------------------------
+“functions are first class values” what does this exactly mean?
+----------------------------------------------------------------
+It means that functions can be passed around the same way as integers, sequences, etc.
+
+scala> def add(x:Int) =x + 2
+add: (x: Int)Int
+
+scala> add(3)
+res3: Int = 5
+
+-----------------------------------------------------
+Q) Factorial Program in Scala
+-----------------------------------------------------
+scala> def factorial(x:BigInt): BigInt=
+     | if (x==0) 1 else x * factorial(x-1)
+factorial: (x: BigInt)BigInt
+
+scala> factorial(3)
+res0: BigInt = 6
+
+scala> factorial(5)
+res1: BigInt = 120
+
+scala> factorial(30)
+res2: BigInt = 265252859812191058636308480000000
+
+where other languages might have objects and functions as two different concepts, in Scala a function value is an object.
+
+Function types are classes that can be inherited by subclasses.
+
+Scala is an object-oriented language in pure form: every value is an object and every operation is a method call.
+
+For example, when you say 1 + 2 in Scala, you are actually invoking a method named + defined in class Int.
+
+An example is Scala’s traits. Traits are like interfaces in Java, but they can also have method implementations and even fields.
+
+functions are first-class values. 
+In a functional language, a function is a value of the same status as, say, an integer or a string. 
+You can pass functions as arguments to other functions, return them as results from functions,or store them in variables.
+
+You can also define a function inside another function, just as you can define an integer value inside a function. And you
+can define functions without giving them a name.
+

@@ -1,0 +1,498 @@
+LIST
+--------------------------------------------------
+List type, an immutable(element of list cannot be changed) singly linked list.
+Like array List are homogeneous(elements of list have same type).
+
+contains , endsWith , exists ,forall ,startsWith,distinct
+drop,Flatten,Filter,reverse,sortBy,sorted,splitAt
+take,zip,isEmpty,takeRight,dropRight
+mkString,toBuffer,toList,toMap,toSet,toString,
+Max, Min, Product, Sum
+filter, partition, find, takeWhile, dropWhile, and span
+
+
+scala> val numbers=List(32,95,24,21)
+numbers: List[Int] = List(32, 95, 24, 21)
+
+scala> val fruit="orange" :: "apple" :: Nil
+fruit: List[String] = List(orange, apple)
+
+scala> val colours=List("red","green","blue")
+colours: List[String] = List(red, green, blue)
+
+scala> colours.head
+res1: String = red
+
+scala> colours.tail
+res2: List[String] = List(green, blue)
+
+scala> colours(1)
+res3: String = green
+
+scala> colours(2)
+res4: String = blue
+
+scala>  val numbers=List(32,95,24,21,17)
+numbers: List[Int] = List(32, 95, 24, 21, 17)
+
+scala> var total=0;for(i <- numbers){ total += i }
+total: Int = 189
+
+foreach(), map(), and reduce() higher-order functions available
+in List and other collections.
+
+scala> colours.foreach((c:String) => println(c))
+green
+red
+blue
+
+scala> colours.foreach((c:String) => println(c.size))
+5
+3
+4
+
+scala> val size=colours.map((c:String) => c.size)
+size: List[Int] = List(5, 3, 4)
+
+scala> val total=numbers.reduce((a:Int,b:Int) => a + b)
+total: Int = 189
+
+foreach() takes a function (a procedure, to be accurate) and invokes it with
+every item in the list.
+map() takes a function that converts a single list element to another value and/or
+type.
+reduce() takes a function that combines two list elements into a single element.
+
+scala> val oddeven=List(List(1,3,5),List(2,4,6))
+oddeven: List[List[Int]] = List(List(1, 3, 5), List(2, 4, 6))
+
+scala> val keyvalue=List(('A',65),('B',66),('C',67))
+keyvalue: List[(Char, Int)] = List((A,65), (B,66), (C,67))
+
+Nil is essentially a singleton instance of List[Nothing].
+
+Creating a new, empty list will actually return Nil instead of a fresh instance.
+
+right-associative cons operator :: for binding elements
+
+scala> val num=1 :: 2 :: 3 :: Nil
+num: List[Int] = List(1, 2, 3)
+
+::
+------
+scala> 1 :: 2 :: Nil
+res12: List[Int] = List(1, 2)
+
+:::
+------concatenating List
+scala> List(1,2) ::: List(2,3)
+res14: List[Int] = List(1, 2, 2, 3)
+
+++
+------- Appends another collection to this list
+scala> List(1,2) ++ Set(3,4,3)
+res19: List[Int] = List(1, 2, 3, 4)
+
+==
+---------Return true if collection type and contents are equal.
+scala> List(1,2) == List(1,2)
+res20: Boolean = true
+
+distinct
+---------
+scala> List(3,5,4,3,4).distinct
+res21: List[Int] = List(3, 5, 4)
+
+drop
+-----subtract first n elements from the list
+scala> List('a','b','c','d') drop 2
+res22: List[Char] = List(c, d)
+
+scala> List('a','b','c','d') drop 3
+res23: List[Char] = List(d)
+
+scala> List('a','b','c','d') drop 5
+res24: List[Char] = List()
+
+scala> List('a','b','c','d') drop 1
+res25: List[Char] = List(b, c, d)
+
+Filter
+------------
+scala> List(23,8,14,21)  filter (_ > 18)
+res27: List[Int] = List(23, 21)
+
+Flatten
+----------convert list of list into a single List
+scala> List(List(1,2),List(2,3)).flatten
+res29: List[Int] = List(1, 2, 2, 3)
+
+Partition
+-------------- Group element into a tuple of two list
+scala> List(1,2,3,4,5)partition(_ < 3)
+res30: (List[Int], List[Int]) = (List(1, 2),List(3, 4, 5))
+
+reverse
+------------Reverse the List
+scala> List(1,2,3).reverse
+res31: List[Int] = List(3, 2, 1)
+
+sortBy
+-----------
+scala> List("apple","to") sortBy (_.size)
+res1: List[String] = List(to, apple)
+
+sorted
+---------------
+scala> List("apple","to").sorted
+res2: List[String] = List(apple, to)
+
+splitAt
+----------------
+scala> List(2,3,5,7)splitAt 2
+res3: (List[Int], List[Int]) = (List(2, 3),List(5, 7))
+
+scala> List(2,3,5,7)splitAt 1
+res4: (List[Int], List[Int]) = (List(2),List(3, 5, 7))
+
+take
+--------------
+scala> List(2,3,5,7,11,13) take 3
+res5: List[Int] = List(2, 3, 5)
+
+zip
+---------------
+scala> List(1,2) zip List("a","b")
+res6: List[(Int, String)] = List((1,a), (2,b))
+
+scala> val zipped = "abcde".toList zip List(1, 2, 3)
+zipped: List[(Char, Int)] = List((a,1), (b,2), (c,3))
+
+isEmpty
+--------------
+there is an isEmpty method on lists we can use that does not need to traverse
+the list.
+
+All lists end with an instance of Nil as their terminus, so an iterator can
+check for the list’s end by comparing the current element to Nil:
+
+scala> var primes=List(2,5,7,11,13)
+primes: List[Int] = List(2, 5, 7, 11, 13)
+
+scala> val i = primes
+i: List[Int] = List(2, 5, 7, 11, 13)
+
+scala> while(i != Nil){ print(i.head + ",");i=i.tail}
+2,5,7,11,13,
+
+scala> val list=List(3,4,5,6,7)
+list: List[Int] = List(3, 4, 5, 6, 7)
+
+scala> list :+ 5
+res7: List[Int] = List(3, 4, 5, 6, 7, 5)
+
+scala> val suff=list takeRight 3
+suff: List[Int] = List(5, 6, 7)
+
+scala> val suff=list dropRight 2
+suff: List[Int] = List(3, 4, 5)
+
+scala> list
+res8: List[Int] = List(3, 4, 5, 6, 7)
+
+flatMap
+--------------
+
+scala> List("milk,tea")flatMap(_.split(','))
+res9: List[String] = List(milk, tea)
+
+scala> List("milk,tea")map(_.split(','))
+res10: List[Array[String]] = List(Array(milk, tea))
+
+scala> List("milk,tea")map(_.toUpperCase)
+res11: List[String] = List(MILK,TEA)
+
+Max Min Product Sum
+-----------------------------
+scala> List(41,23,55).max
+res12: Int = 55
+
+scala> List(41,23,55).min
+res13: Int = 23
+
+scala> List(41,23,55).product
+res14: Int = 51865
+
+scala> List(41,23,55).sum
+res15: Int = 119
+
+contains , endsWith , exists ,forall ,startsWith
+----------------------------------------------------------
+scala> List(41,23,55).contains(23)
+res16: Boolean = true
+
+scala> List(41,23,55).contains(44)
+res17: Boolean = false
+
+scala> List(41,23,55) endsWith List(55)
+res18: Boolean = true
+
+scala> List(41,23,55) endsWith List(55,33)
+res19: Boolean = false
+
+scala> List(41,23,55) exists (_ < 18)
+res20: Boolean = false
+
+scala> List(41,23,55) exists (_ < 25)
+res21: Boolean = true
+
+scala> List(41,23,55) forall (_ < 25)
+res22: Boolean = false
+
+scala> List(41,23,55) forall (_ < 57)
+res23: Boolean = true
+
+scala> List(41,23,55) startsWith List(41)
+res24: Boolean = true
+
+scala> List(41,23,55) startsWith List(23)
+res25: Boolean = false
+
+fold,foldLeft,foldRight,scan,scanLeft,scanRight,reduce,reduceLeft,reduceRight
+------------------------------------------------------------------------------
+scala> List(4,5,6).fold(1)(_+_)
+res28: Int = 16
+
+scala> List(4,5,6).fold(2)(_+_)
+res29: Int = 17
+
+scala> List(4,5,6).foldLeft(0)(_+_)
+res30: Int = 15
+
+scala>  List(4,5,6).foldLeft(-1)(_+_)
+res68: Int = 14
+
+scala>  List(4,5,6).foldLeft(-3)(_+_)
+res69: Int = 12
+
+scala> List(4,5,6).foldRight(0)(_+_)
+res31: Int = 15
+
+scala> List(4,5,6).foldRight(-1)(_+_)
+res32: Int = 14
+
+scala> List(4,5,6).reduce(_+_)
+res33: Int = 15
+
+scala> List(4,5,6).scan(0)(_+_)
+res34: List[Int] = List(0, 4, 9, 15)
+
+scala> List(4,5,6).scanLeft(0)(_+_)
+res35: List[Int] = List(0, 4, 9, 15)
+
+scala> List(4,5,6).scanRight(0)(_+_)
+res36: List[Int] = List(15, 11, 6, 0)
+
+scala> List(4,5,6).reduceLeft(_+_)
+res37: Int = 15
+
+scala> List(4,5,6).reduceRight(_+_)
+res38: Int = 15
+
+
+mkString,toBuffer,toList,toMap,toSet,toString
+------------------------------------------------------------------------------
+
+scala> List(24,99,104).mkString(",")
+res40: String = 24,99,104
+
+scala> List(24,99,104).mkString("|")
+res41: String = 24|99|104
+
+scala> List('f','t').toBuffer
+res42: scala.collection.mutable.Buffer[Char] = ArrayBuffer(f, t)
+
+scala> Map("a"->1,"b"->2)
+res43: scala.collection.immutable.Map[String,Int] = Map(a -> 1, b -> 2)
+
+scala> Map("a"->1,"b"->2).toList
+res44: List[(String, Int)] = List((a,1), (b,2))
+
+scala> Map("a"->1,"b"->2).toList
+res45: List[(String, Int)] = List((a,1), (b,2))
+
+scala> Set(1->true,3->true).toMap
+res47: scala.collection.immutable.Map[Int,Boolean] = Map(1 -> true, 3 -> true)
+
+scala> val abc=Set(1->true,3->true).toMap
+abc: scala.collection.immutable.Map[Int,Boolean] = Map(1 -> true, 3 -> true)
+
+scala> abc(1)
+res48: Boolean = true
+
+scala> List(2,5,5,3,2).toSet
+res49: scala.collection.immutable.Set[Int] = Set(2, 5, 3)
+
+scala> List(2,5,5,3,2).toString
+res50: String = List(2, 5, 5, 3, 2)
+
+List is ordered while Set and Map are unordered.
+
+Filtering lists: filter, partition, find, takeWhile, dropWhile, and span
+--------------------------------------------------
+Partition: 
+------------
+The partition method is like filter, but it returns a pair of lists. One list
+contains all elements for which the predicate is true, while the other list
+contains all elements for which the predicate is false .
+
+scala> List(1,2,3,4,5) partition (_ % 2 == 0)
+res94: (List[Int], List[Int]) = (List(2, 4),List(1, 3, 5))
+
+find:
+-------
+The find method is also similar to filter but it returns the first element
+satisfying a given predicate, rather than all such elements.
+
+scala> List(1,2,3,4) find(_%2 == 0)
+res95: Option[Int] = Some(2)
+
+takeWhile
+-----------
+The takeWhile and dropWhile operators also take a predicate as their right
+operand. The operation xs takeWhile p takes the longest prefix of list xs
+such that every element in the prefix satisfies p.
+
+scala> List(1,2,3,-4,-6,5) takeWhile(_>0)
+res96: List[Int] = List(1, 2, 3)
+
+scala> List(-1,2,3,-4,-6,5) takeWhile(_>0)
+res97: List[Int] = List()
+
+dropWhile
+-----------
+dropWhile p removes the longest prefix from list xs such that every
+element in the prefix satisfies p.
+
+scala> words
+res98: List[String] = List(the, wuick)
+
+scala> words dropWhile(_ startsWith "t")
+res99: List[String] = List(wuick)
+
+span
+-----
+span method combines takeWhile and dropWhile in one operation,
+just like splitAt combines take and drop.
+
+scala> List(1,2,3,-4,5)span(_>0)
+res100: (List[Int], List[Int]) = (List(1, 2, 3),List(-4, 5))
+
+SET
+--------------------------------------------------
+A Set is an immutable(immutable means original collection is not changed after they have been created,new will be created from that) and unordered collection of unique elements, but works similarly
+to List.
+
+scala> val uniq=Set(10,20,30,20,20,10)
+uniq: scala.collection.immutable.Set[Int] = Set(10, 20, 30)
+
+scala> val sum=uniq.reduce((a,b)=> a + b)
+sum: Int = 60
+
+Map
+--------------------------------------------------
+A Map is an immutable key-value store, also known as a hashmap
+Values stored in a Map with a given unique key may be retrieved using that key.
+
+scala> val mapcric=Map("india" -> "virat","aus" -> "finch","eng"-> "morgan")
+mapcric: scala.collection.immutable.Map[String,String] = Map(india -> virat, aus -> finch, eng -> morgan)
+
+scala> mapcric("india")
+res15: String = virat
+
+scala> mapcric("aus")
+res16: String = finch
+
+scala> for(p <- mapcric){println(p)}
+(india,virat)
+(aus,finch)
+(eng,morgan)
+
+scala> val m=Map("AAPL"->597,"MSFT"->40)
+m: scala.collection.immutable.Map[String,Int] = Map(AAPL -> 597, MSFT -> 40)
+
+scala> val n=m-"AAPL" +("GOOG"->521)
+n: scala.collection.immutable.Map[String,Int] = Map(MSFT -> 40, GOOG -> 521)
+
+scala> m
+res51: scala.collection.immutable.Map[String,Int] = Map(AAPL -> 597, MSFT -> 40)
+
+As we can see we added new element but still original is not changed.
+
+What you end up with is a completely new collection stored in “n”. The original collection,
+stored in the “m” value, remains untouched. And this is exactly the point of immutable
+data.
+
+Immutable type 					Mutable counterpart
+----------------------------------------------------------
+collection.immutable.List 		collection.mutable.Buffer
+collection.immutable.Set 		collection.mutable.Set
+collection.immutable.Map 		collection.mutable.Map
+
+Buffer
+----------------------------
+scala> val nums=collection.mutable.Buffer(1)
+nums: scala.collection.mutable.Buffer[Int] = ArrayBuffer(1)
+
+scala> for(i <- 2 to 10) nums += i
+
+scala> nums
+res53: scala.collection.mutable.Buffer[Int] = ArrayBuffer(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+The List, Map, and Set immutable collections can all be converted to the mutable
+collection.mutable.Buffer type with the toBuffer method.
+
+scala>  val m=Map("AAPL"->597,"MSFT"->40)
+m: scala.collection.immutable.Map[String,Int] = Map(AAPL -> 597, MSFT -> 40)
+
+scala> val b=m.toBuffer
+b: scala.collection.mutable.Buffer[(String, Int)] = ArrayBuffer((AAPL,597), (MSFT,40))
+
+scala> b trimStart 1
+
+scala> b += ("GOOG"-> 521)
+res57: b.type = ArrayBuffer((MSFT,40), (GOOG,521))
+
+scala> val n = b.toMap
+n: scala.collection.immutable.Map[String,Int] = Map(MSFT -> 40, GOOG -> 521)
+
+scala> b += ("GOOG" -> 521)
+res58: b.type = ArrayBuffer((MSFT,40), (GOOG,521), (GOOG,521))
+
+scala> val l = b.toList
+l: List[(String, Int)] = List((MSFT,40), (GOOG,521), (GOOG,521))
+
+scala> val l = b.toSet
+l: scala.collection.immutable.Set[(String, Int)] = Set((MSFT,40), (GOOG,521))
+
+When you convert from Buffer to Set any duplicate element will be removed.
+
+
+Arrays
+--------------------
+An Array is a fixed-size, mutable, indexed collection. It’s not officially a collection, because
+it isn’t in the “scala.collections” package and doesn’t extend from the root Itera
+ble type (although it has all of the Iterable operations like map and filter).
+
+scala> val colours=Array("red","green","blue")
+colours: Array[String] = Array(red, green, blue)
+
+scala> colours(0)
+res59: String = red
+
+scala> colours(9)
+java.lang.ArrayIndexOutOfBoundsException: 9
+  ... 28 elided
+
+scala> colours
+res62: Array[String] = Array(red, green, blue)

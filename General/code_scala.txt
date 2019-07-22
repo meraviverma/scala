@@ -1,0 +1,203 @@
+Reverse a string 
+-------------------------------
+Type 1:
+-------
+scala> val x="ravi"
+x: String = ravi
+
+scala> x.reverse
+res9: String = ivar
+
+Type 2:
+----------
+scala> name
+res42: List[String] = List(R, A, V, I)
+
+scala> for(i<-name.length -1 to 0 by -1)print(name(i))
+IVAR
+
+
+Print number from 1 to 4
+-----------------------------
+scala> for (i<-1 to 4)println(i)
+1
+2
+3
+4
+
+Print number from 4 to 1
+------------------------------
+scala> for (i<-4 to 1 by -1)println(i)
+4
+3
+2
+1
+
+Print alternate number
+----------------------------
+scala> for (i<-1 until 10 by 2)println(i)
+1
+3
+5
+7
+9
+
+Declare number from 1 to 10
+-----------------------------------
+scala> val mynum=(1 to 10).toList
+mynum: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+scala> val mynum=(1 to 10 by 2).toList
+mynum: List[Int] = List(1, 3, 5, 7, 9)
+
+scala> val mynum=(2 to 10 by 2).toList
+mynum: List[Int] = List(2, 4, 6, 8, 10)
+
+scala> val mynum=(10 to 2 by -1).toList
+mynum: List[Int] = List(10, 9, 8, 7, 6, 5, 4, 3, 2)
+
+Q)How will you remove duplicate element from an List
+------------------------------------------------------
+Will convert it into set using .toSet
+
+scala> val abc=List(1,2,3,3,4,4,5,6)
+abc: List[Int] = List(1, 2, 3, 3, 4, 4, 5, 6)
+
+scala> abc.toSet
+res57: scala.collection.immutable.Set[Int] = Set(5, 1, 6, 2, 3, 4)
+
+foreach loop
+---------------
+scala> abc.foreach(x=>println(x))
+1
+2
+3
+3
+4
+4
+5
+6
+
+scala> abc.foreach(println _)
+1
+2
+3
+3
+4
+4
+5
+6
+
+When you use an underscore in this way, you are writing a partially applied
+function.
+
+Q) I have a map. How will be add one more element to that map?
+------------------------------------------------------
+ANs:
+scala> var mapc=Map("india"->"delhi","japan"->"tokyo")
+mapc: scala.collection.immutable.Map[String,String] = Map(india -> delhi, japan -> tokyo)
+
+scala> mapc += ("us"->"washington")
+
+scala> mapc
+res66: scala.collection.immutable.Map[String,String] = Map(india -> delhi, japan -> tokyo, us -> washington)
+
+Q)Count the length of the string in a list
+-----------------------------------------
+scala> val words=List("the","wuick")
+words: List[String] = List(the, wuick)
+
+scala> words map(_.length)
+res79: List[Int] = List(3, 5)
+
+Q)Reverse a String
+--------------------------
+scala> words map(_.toList.reverse.mkString)
+res82: List[String] = List(eht, kciuw)
+
+Q)Get odd and even number from List
+-------------------------------------
+scala> List(1,2,3,4)filter(_%2 == 0)
+res88: List[Int] = List(2, 4)
+
+scala> List(1,2,3,4)filter(_%2 != 0)
+res89: List[Int] = List(1, 3)
+
+Q)Get an list from range 1 to 10 and filter even number and print result
+--------------------------------------------------------------------------
+scala> val dl=List.range(1,10)
+dl: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> dl.filter(i=>i%2 == 0)
+res49: List[Int] = List(2, 4, 6, 8)
+
+scala> dl.filter(_%2 == 0)
+res50: List[Int] = List(2, 4, 6, 8)
+
+scala> dl.filter(_%2 == 0).filter(_<6)
+res51: List[Int] = List(2, 4)
+
+scala> dl.filter(_%2 == 0).foreach(println(_))
+2
+4
+6
+8
+
+scala> dl.filter(_%2 == 0).foreach(i=>println(i))
+2
+4
+6
+8
+
+Q)You want to convert elements of a collection to a String, possibly adding a field separator,prefix, and suffix.
+---------------------------------------------------------------------------------------------------------------
+Using mkString we can do that.
+scala> val a =Array("apple","banana","cherry")
+a: Array[String] = Array(apple, banana, cherry)
+
+scala> a.mkString
+res64: String = applebananacherry
+
+scala> a.mkString(",")
+res65: String = apple,banana,cherry
+
+scala> a.mkString("[",",","]")
+res66: String = [apple,banana,cherry]
+
+If you happen to have a list of lists that you want to convert to a String, such as the
+following array of arrays, first flatten the collection, and then call mkString:
+
+scala> val a=Array(Array("a","b"),Array("c","d"))
+a: Array[Array[String]] = Array(Array(a, b), Array(c, d))
+
+scala> a.flatten.mkString(",")
+res67: String = a,b,c,d
+
+Q)How would you sort a collection?
+-------------------------------------
+scala> s.sort
+sortBy   sortWith   sorted
+
+scala> val a=List(10,5,8,1,7)
+a: List[Int] = List(10, 5, 8, 1, 7)
+
+scala> a.sorted
+res72: List[Int] = List(1, 5, 7, 8, 10)
+
+scala> a.sortWith(_ < _)
+res74: List[Int] = List(1, 5, 7, 8, 10)
+
+scala> a.sortWith(_ > _)
+res75: List[Int] = List(10, 8, 7, 5, 1)
+
+scala> val b=List("banana","apple","pear","orange").sorted
+b: List[String] = List(apple, banana, orange, pear)
+
+Sort string with the length
+-----------------------------
+scala> b.sortWith(_.length < _.length)
+res77: List[String] = List(pear, apple, banana, orange)
+
+scala> b.sortWith(_.length > _.length)
+res78: List[String] = List(banana, orange, apple, pear)
+

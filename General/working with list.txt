@@ -1,0 +1,190 @@
+List Literals:
+-------------------------------
+scala> val fruit=List("apple","orange")
+fruit: List[String] = List(apple, orange)
+
+scala> val nums=List(1,2,3)
+nums: List[Int] = List(1, 2, 3)
+
+scala> val dia=List(
+     | List(1,0,0),
+     | List(0,1,1)
+     | )
+dia: List[List[Int]] = List(List(1, 0, 0), List(0, 1, 1))
+
+1) List are similar to arrays but there are two difference:
+	a)List are immutable i.e element of list cannot be changed by assignment.
+	b) List have recursive structure(i.e Linklist), While array are flat.
+
+All operations on lists can be expressed in terms of the following three:
+----------------------------------------------------------------------------
+head :: returns the first element of a list
+tail :: returns a list consisting of all elements except the first
+isEmpty :: returns true if the list is empty
+
+scala> val fruit = "apples" :: ("oranges" :: ("pears" :: Nil))
+fruit: List[String] = List(apples, oranges, pears)
+
+scala> fruit.head
+res4: String = apples
+
+scala> fruit.tail
+res5: List[String] = List(oranges, pears)
+
+scala> fruit.tail.head
+res6: String = oranges
+
+scala> fruit.tail.tail
+res7: List[String] = List(pears)
+
+List Pattern Matching :
+-------------------------------
+scala> val List(a, b, c) = fruit
+a: String = apples
+b: String = oranges
+c: String = pears
+
+If you don't know no of elements in the list simply use ::
+Example:
+
+scala> val a::b::rest=fruit
+a: String = apples
+b: String = oranges
+rest: List[String] = List(pears)
+
+scala> val a::rest=fruit
+a: String = apples
+rest: List[String] = List(oranges, pears)
+
+First-Order
+----------------
+A method is first order if it does not take any function as argument.
+
+::: - this operator is used to concat list.
+
+The result of xs ::: ys is a new list that
+contains all the elements of xs, followed by all the elements of ys. Here are
+
+Like cons, list concatenation associates to the right. An expression like this:
+xs ::: ys ::: zs
+is interpreted like this:
+xs ::: (ys ::: zs)
+
+scala> List(1,2) ::: List(3,4,5)
+res8: List[Int] = List(1, 2, 3, 4, 5)
+----------------------------------------------------------------------------
+length , last , init , reverse , take , drop , splitAt , apply , indices
+zip , zipWithIndex , mkString
+----------------------------------------------------------------------------
+List(1,2,3).length
+
+scala> List(1,2,3).length
+res9: Int = 3
+
+xs.isEmpty by xs.length == 0.
+
+use isEmpty method if you need to compare if list is empty or not.
+.length iterate over the complete list hence it takes time.
+
+scala> val abcde = List('a','b','c','d','e')
+abcde: List[Char] = List(a, b, c, d, e)
+
+scala> abcde.last
+res10: Char = e
+
+scala> abcde.init
+res12: List[Char] = List(a, b, c, d)
+
+scala> abcde.reverse
+res13: List[Char] = List(e, d, c, b, a)
+
+scala> abcde.reverse.reverse
+res14: List[Char] = List(a, b, c, d, e)
+
+scala> abcde take 2
+res15: List[Char] = List(a, b)
+
+scala> abcde take 3
+res16: List[Char] = List(a, b, c)
+
+scala> abcde take 5
+res17: List[Char] = List(a, b, c, d, e)
+
+scala> abcde take 7
+res18: List[Char] = List(a, b, c, d, e)
+
+scala> abcde drop 2
+res19: List[Char] = List(c, d, e)
+
+scala> abcde drop 5
+res20: List[Char] = List()
+
+scala> abcde splitAt 2
+res21: (List[Char], List[Char]) = (List(a, b),List(c, d, e))
+
+scala> abcde splitAt 3
+res22: (List[Char], List[Char]) = (List(a, b, c),List(d, e))
+
+scala> abcde apply 2
+res23: Char = c
+
+scala> abcde(2)
+res24: Char = c
+
+scala> abcde.indices
+res25: scala.collection.immutable.Range = Range 0 until 5
+
+scala> abcde.indices zip abcde
+res26: scala.collection.immutable.IndexedSeq[(Int, Char)] = Vector((0,a), (1,b), (2,c), (3,d), (4,e))
+
+scala> abcde zip List(1,2,3)
+res27: List[(Char, Int)] = List((a,1), (b,2), (c,3))
+
+scala> abcde.zipWithIndex
+res28: List[(Char, Int)] = List((a,0), (b,1), (c,2), (d,3), (e,4))
+
+scala> abcde.toArray
+res30: Array[Char] = Array(a, b, c, d, e)
+
+scala> abcde.toString
+res32: String = List(a, b, c, d, e)
+
+scala> abcde.toList
+res33: List[Char] = List(a, b, c, d, e)
+
+scala> List(1,2,3)map(_+1)
+res34: List[Int] = List(2, 3, 4)
+
+scala> val words =List("the","quick","brown","fox")
+words: List[String] = List(the, quick, brown, fox)
+
+scala> words map(_.length)
+res36: List[Int] = List(3, 5, 5, 3)
+
+scala> words map(_.toList.reverse)
+res37: List[List[Char]] = List(List(e, h, t), List(k, c, i, u, q), List(n, w, o, r, b), List(x, o, f))
+
+scala> words map(_.toList)
+res38: List[List[Char]] = List(List(t, h, e), List(q, u, i, c, k), List(b, r, o, w, n), List(f, o, x))
+
+scala> words map(_.toList.reverse.mkString)
+res40: List[String] = List(eht, kciuq, nworb, xof)
+
+scala> words flatMap(_.toList)
+res41: List[Char] = List(t, h, e, q, u, i, c, k, b, r, o, w, n, f, o, x)
+
+scala> List.range(1,5)flatMap(
+     | i => List.range(1,i) map(j => (i,j))
+     | )
+res43: List[(Int, Int)] = List((2,1), (3,1), (3,2), (4,1), (4,2), (4,3))
+
+scala> List.range(1,5)flatMap(
+     | i => List.range(1,i) map(j => (j,i))
+     | )
+res44: List[(Int, Int)] = List((1,2), (1,3), (2,3), (1,4), (2,4), (3,4))
+
+List.range is a utility method that creates a list of all integers in some range.
+
+It is used twice in this example: once to generate a list of integers
+from 1 (including) until 5 (excluding)
+
