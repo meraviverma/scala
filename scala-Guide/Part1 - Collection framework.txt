@@ -1,0 +1,1355 @@
+---------- ######### Scala Collection ######------------
+>Scala is an OOP and functional programming language
+>Array--->Mutable (underneath is java array)- May be grown, may be updated.
+>List--Immutable (Implemented as data structure),Duplicates allowed
+>Vector-Immutable. 
+List and Vector are immutable .once created the only way to change the size or 
+update is to transform into another reference.
+>Set-- have both mutable and immutable implementations. Unique element
+>Map -- Like sets Map has immutable and mutable implementations.
+The Array is an interesting creature: It’s mutable in that its elements can be changed,
+but it’s immutable in that its size cannot be changed.
+
+• List
+• Array (and ArrayBuffer)
+• Map
+• Set
+
+
+Map:- HashMap,WeakHashMap,SortedMap,TreeMap,LinkedHashMap,ListMap
+Set:-BitSet,HashSet,ListSet,SortedSet,TreeSet
+scala> def maxSquaredDouble(a:Int,b:Int):Int=
+     | if(a>b){
+     | val squared=a*a
+     | squared *2
+     | }else{
+     | val squared=b*b
+     | squared*2
+     | }
+maxSquaredDouble: (a: Int, b: Int)Int
+
+scala> maxSquaredDouble(5,7)
+res8: Int = 98
+
+scala> val divided=try{
+     | a/(b-12)
+     | }catch{
+     | case ae:ArithmeticException=>0
+     | }
+divided: Int = 0
+
+
+scala> val divided = try {
+| 10 / 0
+| } catch {
+| case ae: ArithmeticException => 0
+| } finally {
+| println("This always runs, but does not affect the result")
+| 42
+| }
+This always runs, but does not affect the result
+divided: Int = 0
+
+Predicate
+-----------------------
+A predicate is simply a method, function or anonymous function that takes one or more parameter and returns a
+boolean value.
+Ex:
+def isEven(i:Int)=if(i%2 == 0) true or false
+
+Method definition:
+------------------------
+def max(x:Int,y:Int): Int=if(x>y) x else y
+
+> In SCala, every method and variable has a type, there is no void.
+> The rough equivalent is Unit, of which there is only one instance:()
+> def sayHi(name: String):Unit=println(s"hello $name")
+
+//It will result res1: Unit() if we miss the = sign.
+def add(a:Int,b:Int){
+a + b
+}
+
+add(2,3)
+
+//It will give result as 5. Include =
+def add(a:Int,b:Int)={
+a + b
+}
+
+add(2,3)
+
+Expression vs Statements:
+-----------------------------
+
+Methods organized by category
+-----------------------------
+Filtering methods
+-----------------------------
+Methods that can be used to filter a collection include collect, diff, distinct,
+drop, dropWhile, filter, filterNot, find, foldLeft, foldRight, head,
+headOption, init, intersect, last, lastOption, reduceLeft, reduceRight,
+remove, slice, tail, take, takeWhile, and union.
+
+Transformer methods
+-----------------------------
+Transformer methods take at least one input collection to create a new output collection,
+typically using an algorithm you provide. They include +, ++, −, −−, diff,
+distinct, collect, flatMap, map, reverse, sortWith, takeWhile, zip, and
+zipWithIndex.
+
+Grouping methods
+-------------------------
+These methods let you take an existing collection and create multiple groups from
+that one collection. These methods include groupBy, partition, sliding, span,
+splitAt, and unzip.
+
+Informational and mathematical methods
+------------------------------------------
+These methods provide information about a collection, and include canEqual,
+contains, containsSlice, count, endsWith, exists, find, forAll, has-
+DefiniteSize, indexOf, indexOfSlice, indexWhere, isDefinedAt, isEmpty,
+lastIndexOf, lastIndexOfSlice, lastIndexWhere, max, min, nonEmpty, product,
+segmentLength, size, startsWith, sum. The methods foldLeft, foldRight,
+reduceLeft, and reduceRight can also be used with a function you supply to obtain
+information about a collection.
+
+Others
+-------------------
+A few other methods are hard to categorize, including par, view, flatten,
+foreach, and mkString. par creates a parallel collection from an existing collection;
+view creates a lazy view on a collection (see Recipe 10.24); flatten converts a list
+of lists down to one list; foreach is like a for loop, letting you iterate over the
+elements in a collection; mkString lets you build a String from a collection.
+
+-----------------------------------
+Tuples
+-----------------------------
+>What if we want to return more than one thing from a method?
+>you can access the element of tuples using:
+scala> res._1
+res4: Int = 15
+
+scala> res._2
+res5: Int = 5
+
+Tuples can have maximum arrity of 22.
+
+Infix Notation
+--------------------------
+scala> 1 + 2
+res11: Int = 3
+
+scala> 1.+(2)
+res12: Int = 3
+
+
+-----------------------------------
+###############List################
+-----------------------------------
+They are immutable.
+The Scala List class is immutable, so its size as well as the elements it refers to can’t change.
+
+When changed it doesn't change original list but gives us a new list.Ex:
+
+The definition of the second list is incorrect, resulting in a compiler error. 
+Lists constructed using cons (::) need must end with another 
+list (or Nil, since Nil is the empty list) - this code will produce a compile error.
+
+the ArrowAssoc implicit class in predef provides automatic conversion of Any 
+type in Scala to a type that has a -> method on it (which takes the second argument and returns a tuple of the pair)
+
+-----------------------------------
+foreach,map,reduce,::,:::,++,==
+distinct,drop,filter,flatten,partition,reverse,slice
+sortBy,sorted,splitAt,take,zip
+collect,flatMap,map
+max,min,product,sum
+contains,endsWith,exists,forall,startsWith
+fold,foldLeft,foldRight,reduce,reduceLeft,reduceRight,
+-----------------------------------
+Ways to create List:
+-------------------------
+
+scala> val list=1::2::3::Nil
+list: List[Int] = List(1, 2, 3)
+
+scala> val list=List(1,2,3)
+list: List[Int] = List(1, 2, 3)
+
+scala> val x=List(1,2.0,33D,4000L)
+x: List[Double] = List(1.0, 2.0, 33.0, 4000.0)
+
+scala> val x=List[Number](1,2.0,33D,4000L) //manually set a list of type number
+x: List[Number] = List(1, 2.0, 33.0, 4000)
+
+scala> val x=List.range(1,10)
+x: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> val x=List.range(0,10,2)
+x: List[Int] = List(0, 2, 4, 6, 8)
+
+scala> val x=List.fill(3)("foo")
+x: List[String] = List(foo, foo, foo)
+
+scala> val x=List.tabulate(5)(n=>n*n)
+x: List[Int] = List(0, 1, 4, 9, 16)
+
+scala> "foo".toList
+res0: List[Char] = List(f, o, o)
+
+scala> val xs=List(1,2,3)
+xs: List[Int] = List(1, 2, 3)
+
+scala> xs += 4
+<console>:16: error: value += is not a member of List[Int]
+  Expression does not convert to assignment because receiver is not assignable.
+       xs += 4
+          ^
+
+scala> var xs=List(1,2,3)
+xs: List[Int] = List(1, 2, 3)
+
+scala> xs = 0 :: xs
+xs: List[Int] = List(0, 1, 2, 3)
+
+scala> Nil
+res25: scala.collection.immutable.Nil.type = List()
+
+scala> List(1,2):::List(2,3)
+res5: List[Int] = List(1, 2, 2, 3)
+
+scala> Nil.::(1)
+res26: List[Int] = List(1)
+
+scala> Nil.::(1).::(2)
+res27: List[Int] = List(2, 1)
+
+scala> Nil.::(3).::(2).::(1)
+res28: List[Int] = List(1, 2, 3)
+
+scala> val xs1=List(1,2,3)
+xs1: List[Int] = List(1, 2, 3)
+
+scala> val xs2=List(4,5,6)
+xs2: List[Int] = List(4, 5, 6)
+
+scala> xs1 :: xs2
+res29: List[Any] = List(List(1, 2, 3), 4, 5, 6)
+
+scala> xs1 ::: xs2
+res30: List[Int] = List(1, 2, 3, 4, 5, 6)
+
+Q) If i want to use mutable List how can i do that?
+How do I add elements to a List?
+
+Ans:Use ListBuffer and convert the ListBiffer to a List when needed.
+Because a List is immutable, if you need to create a list that is constantly changing, the
+preferred approach is to use a ListBuffer while the list is being modified, then convert
+it to a List when a List is needed.
+
+--------------------------------------------
+Use CASE1:
+1)Create a list and count length of each element
+2)Sum all the elements of the list.
+-------------------------------------------------
+scala> val colors = List("red", "green", "blue")
+colors: List[String] = List(red, green, blue)
+
+scala> colors.foreach((c:String)=> println(c))
+red
+green
+blue
+
+scala> for (c<- colors){println(c)}
+red
+green
+blue
+
+scala> colors.foreach((c:String)=>println(c.size))
+3
+5
+4
+
+scala> val size=colors.map((c:String)=>c.size)
+size: List[Int] = List(3, 5, 4)
+
+scala> val numbers = List(32, 95, 24, 21, 17)
+numbers: List[Int] = List(32, 95, 24, 21, 17)
+
+scala> val total=numbers.reduce((a:Int,b:Int)=>a+b)
+total: Int = 189
+
+scala> List("milk,tea")flatMap(_.split(','))
+res9: List[String] = List(milk, tea)
+
+scala> List("milk,tea")map(_.toUpperCase)
+res10: List[String] = List(MILK,TEA)
+
+scala> List(0,1,0)collect{case 1 => "ok"}
+res11: List[String] = List(ok)
+
+scala> List(0,1,0)collect{case 0 => "ok"}
+res12: List[String] = List(ok, ok)
+
+scala> List(List(1, 2), List(3, 4)).flatten
+res13: List[Int] = List(1, 2, 3, 4)
+
+scala> List(23, 8, 14, 21) filter (_ > 18)
+res14: List[Int] = List(23, 21)
+
+scala> List(3, 5, 4, 3, 4).distinct
+res15: List[Int] = List(3, 5, 4)
+
+scala> List('a', 'b', 'c', 'd') drop 2
+res16: List[Char] = List(c, d)
+
+scala> List(3, 5, 4, 3, 4).distinct
+res17: List[Int] = List(3, 5, 4)
+
+scala> List(1, 2, 3, 4, 5) partition (_ < 3)
+res18: (List[Int], List[Int]) = (List(1, 2),List(3, 4, 5))
+
+scala> List(2, 3, 5, 7) splitAt 2
+res19: (List[Int], List[Int]) = (List(2, 3),List(5, 7))
+
+scala> List("apple", "to").sorted
+res20: List[String] = List(apple, to)
+
+scala> List(34, 29, 18) contains 29
+res21: Boolean = true
+
+scala> List(0, 4, 3) endsWith List(4, 3)
+res22: Boolean = true
+
+scala> List(24, 17, 32) exists (_ < 18)
+res23: Boolean = true
+
+scala> List(24, 17, 32) forall (_ < 18)
+res24: Boolean = false
+
+scala> List(0, 4, 3) startsWith List(0)
+res25: Boolean = true
+
+
+---------------------------------------------------
+Deleting Elements from a List (or ListBuffer)
+---------------------------------------------------
+Problem::
+
+You want to delete elements from a List or ListBuffer.
+
+Solution::
+
+A List is immutable, so you can’t delete elements from it, but you can filter out the
+elements you don’t want while you assign the result to a new variable:
+
+scala> val originalList = List(5, 1, 4, 3, 2)
+originalList: List[Int] = List(5, 1, 4, 3, 2)
+
+scala> val newList=originalList.filter(_>2)
+newList: List[Int] = List(5, 4, 3)
+
+ListBuffer
+-----------------------------
+scala> import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ListBuffer
+
+scala> import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ListBuffer
+
+scala> val x = ListBuffer(1, 2, 3, 4, 5, 6, 7, 8, 9)
+x: scala.collection.mutable.ListBuffer[Int] = ListBuffer(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> x-=5
+res9: x.type = ListBuffer(1, 2, 3, 4, 6, 7, 8, 9)
+
+scala> x-= (2,3)
+res10: x.type = ListBuffer(1, 4, 6, 7, 8, 9)
+
+scala> x.remove(0)
+res11: Int = 1
+
+scala> x
+res12: scala.collection.mutable.ListBuffer[Int] = ListBuffer(4, 6, 7, 8, 9)
+-------------------------------------------------------------------------------
+scala> var fruits=new ListBuffer[String]()
+fruits: scala.collection.mutable.ListBuffer[String] = ListBuffer()
+
+scala> fruits += "Apple"
+res1: scala.collection.mutable.ListBuffer[String] = ListBuffer(Apple)
+
+scala> fruits += "Banana"
+res2: scala.collection.mutable.ListBuffer[String] = ListBuffer(Apple, Banana)
+
+scala> fruits += "Orange"
+res3: scala.collection.mutable.ListBuffer[String] = ListBuffer(Apple, Banana, Orange)
+
+scala> fruits += ("Strawberry","Kiwi","Pineapple")
+res4: scala.collection.mutable.ListBuffer[String] = ListBuffer(Apple, Banana, Orange, Strawberry, Kiwi, Pineapple)
+
+scala> fruits -= "Apple"
+res5: scala.collection.mutable.ListBuffer[String] = ListBuffer(Banana, Orange, Strawberry, Kiwi, Pineapple)
+
+scala> fruits --= Seq("Kiwi","Pineapple")
+res6: scala.collection.mutable.ListBuffer[String] = ListBuffer(Banana, Orange, Strawberry)
+
+scala> val fruitList=fruits.toList
+fruitList: List[String] = List(Banana, Orange, Strawberry)
+
+
+Q) How do you delete element from a List?
+Ans:We cannot delete element from the List we can filter out and assign to another variable.
+If the list is changing frequently you can use ListBuffer instead of List.ListBuffer is mutable.
+
+Deleting from List:
+-------------------
+x -= 5
+x -= (2,3)
+x.remove(0)
+x.remove(1,3)
+
+Merging( COncatenating)List
+------------------------------
+++ , concat or ::: method
+.concat
+
+scala> val a = List(1,2,3)
+a: List[Int] = List(1, 2, 3)
+
+scala> val b = List(4,5,6)
+b: List[Int] = List(4, 5, 6)
+
+scala> val c=a++b
+c: List[Int] = List(1, 2, 3, 4, 5, 6)
+
+scala> val c = a ::: b
+c: List[Int] = List(1, 2, 3, 4, 5, 6)
+
+scala> val c = List.concat(a,b)
+c: List[Int] = List(1, 2, 3, 4, 5, 6)
+
+Using Stream, a Lazy Version of a List
+--------------------------------------------
+
+A Stream is like a List, except that its elements are computed lazily, in a manner similar
+to how a view creates a lazy version of a collection. Because Stream elements are computed
+lazily, a Stream can be long ... infinitely long.
+
+Just like a List can be constructed with ::, a Stream can be constructed with the #::
+method, using Stream.empty at the end of the expression instead of Nil:
+
+scala> val stream = 1 #:: 2 #:: 3 #:: Stream.empty
+stream: scala.collection.immutable.Stream[Int] = Stream(1, ?)
+-----------------------------------
+#################Array#############
+-----------------------------------
+Arrays are mutable, indexed collections of values.
+The class is mutable in that its elements can be changed, but once the size of an Array is set, it can never grow or shrink.
+
+The Array is an interesting creature: It’s mutable in that its elements can be changed,
+but it’s immutable in that its size cannot be changed.
+
+When you have an instance followed by parens, 
+the apply methos is called with the content of the parens, so Array(1,2,3) is expanded to Array.apply(1,2,3)
+automatically by the compiler.
+
+The Array is an indexed sequential collection, so accessing and changing values by their
+index position is straightforward and fast. Once you’ve created an Array, access its
+elements by enclosing the desired element number in parentheses:
+
+If arr=Array(1,2,3) then arr(1)=99 is equivalent to arr.update(1,99)
+
+scala> val arr2=Array[Int](1,2,3)
+arr2: Array[Int] = Array(1, 2, 3)
+
+scala> val arr2=Array.apply[Int](1,2,3)
+arr2: Array[Int] = Array(1, 2, 3)
+
+scala> arr2
+res24: Array[Int] = Array(1, 2, 3)
+
+scala> val arr2=Array(1,2,3)
+arr2: Array[Int] = Array(1, 2, 3)
+
+scala> val a = Array(1,2,3)
+a: Array[Int] = Array(1, 2, 3)
+
+scala> val fruits=Array("Apple","banana","orange")
+fruits: Array[String] = Array(Apple, banana, orange)
+
+scala> val fruit=new Array[String](2)
+fruit: Array[String] = Array(null, null)
+
+scala> fruit
+res7: Array[String] = Array(null, null)
+
+scala> fruit(0)="apple"
+
+scala> fruit
+res9: Array[String] = Array(apple, null)
+
+scala> fruit(1)="orange"
+
+scala> fruit
+res11: Array[String] = Array(apple, orange)
+
+scala> val x=Array.range(1,10)
+x: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> val x = Array.range(0, 10, 2)
+x: Array[Int] = Array(0, 2, 4, 6, 8)
+
+scala> val x = Array.fill(3)("foo")
+x: Array[String] = Array(foo, foo, foo)
+
+scala> val x = Array.tabulate(5)(n => n * n)
+x: Array[Int] = Array(0, 1, 4, 9, 16)
+
+scala> val x = List(1, 2, 3).toArray
+x: Array[Int] = Array(1, 2, 3)
+
+scala> "Hello".toArray
+res13: Array[Char] = Array(H, e, l, l, o)
+
+Problem:
+You want to create an array whose size can change, i.e., a completely mutable array.
+
+An Array is mutable in that its elements can change, but its size can’t change. 
+To create a mutable, indexed sequence whose size can change, use the ArrayBuffer class.
+
+scala> var characters=ArrayBuffer[String]()
+characters: scala.collection.mutable.ArrayBuffer[String] = ArrayBuffer()
+
+scala> characters += "Ben"
+res16: scala.collection.mutable.ArrayBuffer[String] = ArrayBuffer(Ben)
+
+scala> characters +="Jerry"
+res17: scala.collection.mutable.ArrayBuffer[String] = ArrayBuffer(Ben, Jerry)
+
+Deleting Array and ArrayBuffer Elements
+----------------------------------------------
+scala> import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ArrayBuffer
+
+scala> val x = ArrayBuffer('a', 'b', 'c', 'd', 'e')
+x: scala.collection.mutable.ArrayBuffer[Char] = ArrayBuffer(a, b, c, d, e)
+
+scala> x -= 'a'
+res14: x.type = ArrayBuffer(b, c, d, e)
+
+scala> x -=('b','c')
+res15: x.type = ArrayBuffer(d, e)
+
+Array
+The size of an Array can’t be changed, so you can’t directly delete elements. You can
+reassign the elements in an Array, which has the effect of replacing them:
+
+scala> val a = Array("apple", "banana", "cherry")
+a: Array[String] = Array(apple, banana, cherry)
+
+scala> a(1)=null
+
+scala> a
+res17: Array[String] = Array(apple, null, cherry)
+
+Sorting Arrays
+------------------------
+scala> val fruits = Array("cherry", "apple", "banana")
+fruits: Array[String] = Array(cherry, apple, banana)
+
+scala> scala.util.Sorting.quickSort(fruits)
+
+scala> fruits
+res20: Array[String] = Array(apple, banana, cherry)
+
+Notice that quickSort sorts the Array in place; there’s no need to assign the result to a
+new variable.
+
+
+-----------------------
+Multidimensional Array
+-----------------------
+There are two main solutions:
+• Use Array.ofDim to create a multidimensional array. You can use this approach to
+create arrays of up to five dimensions. With this approach you need to know the
+number of rows and columns at creation time.
+• Create arrays of arrays as needed.
+
+Using Array.ofDim
+Use the Array.ofDim method to create the array
+
+scala> val rows=2
+rows: Int = 2
+
+scala> val cols=3
+cols: Int = 3
+
+scala> val a=Array.ofDim[String](rows,cols)
+a: Array[Array[String]] = Array(Array(null, null, null), Array(null, null, null))
+
+scala> a(0)(0)="a"
+
+scala> a
+res21: Array[Array[String]] = Array(Array(a, null, null), Array(null, null, null))
+
+scala> a(0)(1)="b"
+
+scala> a
+res23: Array[Array[String]] = Array(Array(a, b, null), Array(null, null, null))
+
+scala> a(0)(1)
+res24: String = b
+
+Using an array of arrays
+------------------------------
+scala> val a = Array( Array("a", "b", "c"), Array("d", "e", "f") )
+a: Array[Array[String]] = Array(Array(a, b, c), Array(d, e, f))
+
+scala> a(0)
+res21: Array[String] = Array(a, b, c)
+
+scala> a(0)(0)
+res22: String = a
+-----------------------------------
+#########Sequence####################
+-----------------------------------
+>List and array are both sequence in scala, subtype of seq
+
+scala> val a1:Seq[Int]=Array(1,2,3)
+a1: Seq[Int] = WrappedArray(1, 2, 3)
+
+scala> val l1:Seq[Int]=List(1,2,3)
+l1: Seq[Int] = List(1, 2, 3)
+
+-----------------------------------
+###########Vector##############
+-----------------------------------
+>It is an immutable data structure and it works exactly the same as array.
+
+val v1=Vector(1,2,3)
+
+scala> val v=Vector(1,2,3)
+v: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3)
+
+scala> v.sum
+res57: Int = 6
+
+scala> v.filter(_>1)
+res58: scala.collection.immutable.Vector[Int] = Vector(2, 3)
+
+scala> v.map(_*2)
+res59: scala.collection.immutable.Vector[Int] = Vector(2, 4, 6)
+
+-----------------------------------
+############sets###########
+-----------------------------------
+> A seq(sequence) is an ordered collection of homogeneous values that may be repeated.
+> By contrast, a set is an unordered collection of homogeneous values that are unique.
+>A set cannot be passed to a function expecting a Seq, it is not a sub-type of Seq:
+>Set doesn't maintain order.
+> A set cannot be passed to a function that's expecting.
+>set is both mutable and immutable.. For immutable  import scala.collection._ 
+>LinkedHashSet saves elements in the order in which they are inserted.
+>The SortedSet is available only in an immutable version. If you need a mutable version,
+use the java.util.TreeSet. The LinkedHashSet is available only as a mutable collection.
+
+scala> Set(1,2,3,4,5,6,2,3,4)
+res32: scala.collection.immutable.Set[Int] = Set(5, 1, 6, 2, 3, 4)
+
+scala> import scala.collection._
+import scala.collection._
+
+scala> val s2=collection.mutable.S
+Seq       Set          SetLike    SortedMap   Stack        StringBuilder   SynchronizedBuffer   SynchronizedPriorityQueue   SynchronizedSet
+SeqLike   SetBuilder   SetProxy   SortedSet   StackProxy   Subscriber      SynchronizedMap      SynchronizedQueue           SynchronizedStack
+
+scala> val s2=collection.mutable.Se
+Seq   SeqLike   Set   SetBuilder   SetLike   SetProxy
+
+scala> val s2=collection.mutable.Set(1,2,3)
+s2: scala.collection.mutable.Set[Int] = Set(1, 2, 3)
+
+scala> var set = scala.collection.mutable.Set[Int]()
+set: scala.collection.mutable.Set[Int] = Set()
+
+scala> set +=1
+res12: scala.collection.mutable.Set[Int] = Set(1)
+
+scala> set += (2,3)
+res13: scala.collection.mutable.Set[Int] = Set(1, 2, 3)
+
+scala> set += 2
+res14: scala.collection.mutable.Set[Int] = Set(1, 2, 3)
+
+scala> set.add(6)
+res15: Boolean = true
+
+scala> set
+res16: scala.collection.mutable.Set[Int] = Set(1, 2, 6, 3)
+
+scala> set.add(2)
+res17: Boolean = false
+
+scala> set
+res18: scala.collection.mutable.Set[Int] = Set(1, 2, 6, 3)
+
+Deleting Elements from Sets
+------------------------------
+scala> set
+res18: scala.collection.mutable.Set[Int] = Set(1, 2, 6, 3)
+
+scala> set -=1
+res19: scala.collection.mutable.Set[Int] = Set(2, 6, 3)
+
+scala> set -= (2,3)
+res20: scala.collection.mutable.Set[Int] = Set(6)
+
+scala> set.clear
+
+--------------------------
+Using Sortable Sets
+-------------------------
+scala> val s=scala.collection.SortedSet(10,4,8,2)
+s: scala.collection.SortedSet[Int] = TreeSet(2, 4, 8, 10)
+
+scala> val s = scala.collection.SortedSet("cherry", "kiwi", "apple")
+s: scala.collection.SortedSet[String] = TreeSet(apple, cherry, kiwi)
+
+scala> var s = scala.collection.mutable.LinkedHashSet(10, 4, 8, 2)
+s: scala.collection.mutable.LinkedHashSet[Int] = Set(10, 4, 8, 2)
+
+//case study
+class Person (var name: String)
+import scala.collection.SortedSet
+val aleka = new Person("Aleka")
+val christina = new Person("Christina")
+val molly = new Person("Molly")
+val tyler = new Person("Tyler")
+// this won't work
+val s = SortedSet(molly, tyler, christina, aleka)
+In the REPL, the last line of code fails with this error:
+scala> val s = SortedSet(molly, tyler, christina, aleka)
+<console>:17: error: No implicit Ordering defined for Person.
+val s = SortedSet(molly, tyler, christina, aleka)
+^
+To solve this problem, modify the Person class to extend the Ordered trait, and implement
+a compare method:
+class Person (var name: String) extends Ordered [Person]
+{
+override def toString = name
+// return 0 if the same, negative if this < that, positive if this > that
+def compare (that: Person) = {
+if (this.name == that.name)
+0
+else if (this.name > that.name)
+1
+else
+−1
+
+-------------------------------------------
+###################Queue##################
+-------------------------------------------
+>>A queue is a first-in, first-out (FIFO) data structure. Scala offers both an immutable
+queue and mutable queue.
+
+scala> import scala.collection.mutable.Queue
+import scala.collection.mutable.Queue
+
+scala> val q=Queue(1,2,3)
+q: scala.collection.mutable.Queue[Int] = Queue(1, 2, 3)
+
+scala> val q=new Queue[String]
+q: scala.collection.mutable.Queue[String] = Queue()
+
+scala> q+="apple"
+res21: q.type = Queue(apple)
+
+scala> q+=("kiwi","banana")
+res22: q.type = Queue(apple, kiwi, banana)
+
+scala> q+=List("cherry","coco")
+<console>:14: error: type mismatch;
+ found   : List[String]
+ required: String
+       q+=List("cherry","coco")
+              ^
+
+scala> q++=List("cherry","coco")
+res25: q.type = Queue(apple, kiwi, banana, cherry, coco)
+
+scala> q.enqueue("apple")
+
+scala> q
+res27: scala.collection.mutable.Queue[String] = Queue(apple, kiwi, banana, cherry, coco, apple)
+
+scala> q.dequeue
+res28: String = apple
+
+scala> q.dequeue
+res29: String = kiwi
+
+scala> q
+res30: scala.collection.mutable.Queue[String] = Queue(banana, cherry, coco, apple)
+
+scala> q.dequeueFirst(_.startsWith("b"))
+res31: Option[String] = Some(banana)
+
+scala> q
+res32: scala.collection.mutable.Queue[String] = Queue(cherry, coco, apple)
+
+scala> q.dequeueAll(_.length > 6)
+res33: scala.collection.mutable.Seq[String] = ArrayBuffer()
+
+-------------------------------------------
+###################Stack##################
+-------------------------------------------
+>>A stack is a last-in, first-out (LIFO) data structure.
+>>In most programming languages you add elements to a stack using a push method, and 
+take elements off the stack with pop
+>>Scala has both immutable and mutable versions of a stack, as well as an ArrayStack
+
+scala> import scala.collection.mutable.Stack
+import scala.collection.mutable.Stack
+
+scala> var fruits=Stack[String]()
+fruits: scala.collection.mutable.Stack[String] = Stack()
+
+scala> fruits.push("apple")
+res34: scala.collection.mutable.Stack[String] = Stack(apple)
+
+scala> fruits.push("banana")
+res35: scala.collection.mutable.Stack[String] = Stack(banana, apple)
+
+scala> fruits.push("coconut", "orange", "pineapple")
+res36: scala.collection.mutable.Stack[String] = Stack(pineapple, orange, coconut, banana, apple)
+
+scala> val next = fruits.pop
+next: String = pineapple
+
+scala> fruits
+res37: scala.collection.mutable.Stack[String] = Stack(orange, coconut, banana, apple)
+
+-------------------------------------------
+###################Range##################
+-------------------------------------------
+Ranges are often used to populate data structures, and to iterate over for loops. Ranges
+provide a lot of power with just a few methods.
+
+scala> val x =(1 to 10).toList
+x: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+scala> val x =('a' to 'c').toList
+x: List[Char] = List(a, b, c)
+
+scala> val x =(1 to 10 by 2).toList
+x: List[Int] = List(1, 3, 5, 7, 9)
+
+scala> val x =(1 until 10).toList
+x: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> val x =(1 to 10).toList
+x: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+scala> val x = (1 to 5).map { e => (e + 1.1) * 2 }
+x: scala.collection.immutable.IndexedSeq[Double] = Vector(4.2, 6.2, 8.2, 10.2, 12.2)
+
+scala> val x = List.tabulate(5)(_ + 1)
+x: List[Int] = List(1, 2, 3, 4, 5)
+
+scala> val x = Vector.tabulate(5)(_ * 2)
+x: scala.collection.immutable.Vector[Int] = Vector(0, 2, 4, 6, 8)
+-----------------------------------
+######Map######## map(mutable,immutable)SortedMap,LinkedHashMap(mutable),ListMap(mutable,immutable)
+-----------------------------------
+Like sets Map has immutable and mutable implementations.
+A Scala Map is a collection of key/value pairs, like a Java Map.
+
+One big difference between a Scala Map and the Java map classes is that the default Map in Scala is immutable.
+
+
+The mutable map is not in scope by default, so you must import it.
+scala> import scala.collection._
+import scala.collection._
+
+scala> val m1=mutable.Map('a'->1,'b'->2,'c'->3)
+m1: scala.collection.mutable.Map[Char,Int] = Map(b -> 2, a -> 1, c -> 3)
+
+scala> m1
+res38: scala.collection.mutable.Map[Char,Int] = Map(b -> 2, a -> 1, c -> 3)
+scala> m1('b')
+res42: Int = 2
+
+scala> m1('c')
+res43: Int = 3
+
+scala> for ((k,v) <- m1) printf("key: %s, value: %s\n", k, v)
+key: b, value: 2
+key: a, value: 1
+key: c, value: 3
+
+scala> for ((k,v) <- m1) printf("%s %s\n", k, v)
+b 2
+a 1
+c 3
+
+scala> val states = Map("AL" -> "Alabama", "AK" -> "Alaska")
+states: scala.collection.immutable.Map[String,String] = Map(AL -> Alabama, AK -> Alaska)
+
+scala> states
+res24: scala.collection.immutable.Map[String,String] = Map(AL -> Alabama, AK -> Alaska)
+
+--->>To create a mutable map, either use an import statement to bring it into scope, or specify
+the full path to the scala.collection.mutable.Map class
+
+scala> var states = collection.mutable.Map("AL" -> "Alabama")
+states: scala.collection.mutable.Map[String,String] = Map(AL -> Alabama)
+
+--->> We can also create an empty,mutable map initially,and add elements to it later.
+
+scala> var states = collection.mutable.Map[String, String]()
+states: scala.collection.mutable.Map[String,String] = Map()
+
+scala> states += ("AL"-> "Alabama")
+res25: scala.collection.mutable.Map[String,String] = Map(AL -> Alabama)
+
+scala> states
+res26: scala.collection.mutable.Map[String,String] = Map(AL -> Alabama)
+
+However, be careful, because if the map doesn’t contain the requested key, 
+a java.util.NoSuchElementException exception is thrown:
+
+Add elements 
+
+scala> val a=Map("Al"->"Alabama")
+a: scala.collection.immutable.Map[String,String] = Map(Al -> Alabama)
+
+scala> val b=a+ ("ak"->"alaska")
+b: scala.collection.immutable.Map[String,String] = Map(Al -> Alabama, ak -> alaska)
+
+//Get keys from Map
+scala> b.keys
+res25: Iterable[String] = Set(Al, ak)
+
+//Get values from Map
+scala> b.values
+res26: Iterable[String] = MapLike.DefaultValuesIterable(Alabama, alaska)
+
+Choosing a Map Implementation
+--------------------------------------
+>>>If you want a map that returns its elements in sorted order by keys, use a SortedMap
+
+scala> val grades=SortedMap("Kim"->90,"Al"->85,"Melissa"->95,"Emily"->91,"Hannah"->92)
+grades: scala.collection.SortedMap[String,Int] = Map(Al -> 85, Emily -> 91, Hannah -> 92, Kim -> 90, Melissa -> 95)
+
+scala> grades
+res28: scala.collection.SortedMap[String,Int] = Map(Al -> 85, Emily -> 91, Hannah -> 92, Kim -> 90, Melissa -> 95)
+
+>>>If you want a map that remembers the insertion order of its elements, use a LinkedHashMap or ListMap. 
+Scala only has a mutable LinkedHashMap, and it returns its
+elements in the order you inserted them:
+
+scala> import scala.collection.mutable.LinkedHashMap
+import scala.collection.mutable.LinkedHashMap
+
+scala> var states=LinkedHashMap("IL"->"Illinois")
+states: scala.collection.mutable.LinkedHashMap[String,String] = Map(IL -> Illinois)
+
+scala> states += ("KY"->"Kentucky")
+res29: scala.collection.mutable.LinkedHashMap[String,String] = Map(IL -> Illinois, KY -> Kentucky)
+
+scala> states += ("TX"->"Texas")
+res30: scala.collection.mutable.LinkedHashMap[String,String] = Map(IL -> Illinois, KY -> Kentucky, TX -> Texas)
+
+scala> states
+res31: scala.collection.mutable.LinkedHashMap[String,String] = Map(IL -> Illinois, KY -> Kentucky, TX -> Texas)
+
+>>>Scala has both mutable and immutable ListMap classes. They return elements in the
+opposite order in which you inserted them, as though each insert was at the head of the
+map (like a List):
+
+scala> import scala.collection.mutable.ListMap
+import scala.collection.mutable.ListMap
+
+scala> var states=ListMap("IL"->"Illinois")
+states: scala.collection.mutable.ListMap[String,String] = Map(IL -> Illinois)
+
+scala> states += ("KY"->"Kent")
+res32: scala.collection.mutable.ListMap[String,String] = Map(KY -> Kent, IL -> Illinois)
+
+scala> states += ("TX"->"Texas")
+res33: scala.collection.mutable.ListMap[String,String] = Map(TX -> Texas, IL -> Illinois, KY -> Kent)
+----------------------------------------------------------------
+Adding, Updating, and Removing Elements with a Mutable Map
+----------------------------------------------------------------
+Add elements to a mutable map with the += method.
+Remove elements with -= or --=. Update elements by reassigning them.
+
+scala> var states=scala.collection.mutable.Map[String,String]()
+states: scala.collection.mutable.Map[String,String] = Map()
+
+scala> states("AK")="Alaska"
+
+scala> states +=("AL"->"Alabama")
+res35: scala.collection.mutable.Map[String,String] = Map(AL -> Alabama, AK -> Alaska)
+
+scala> states += ("AR" -> "Arkansas", "AZ" -> "Arizona")
+res36: scala.collection.mutable.Map[String,String] = Map(AZ -> Arizona, AL -> Alabama, AR -> Arkansas, AK -> Alaska)
+
+scala> states ++= List("CA" -> "California", "CO" -> "Colorado")
+res37: scala.collection.mutable.Map[String,String] = Map(CO -> Colorado, AZ -> Arizona, AL -> Alabama, CA -> California, AR -> Arkansas, AK -> Alaska)
+
+scala> states-= "AK"
+res38: scala.collection.mutable.Map[String,String] = Map(CO -> Colorado, AZ -> Arizona, AL -> Alabama, CA -> California, AR -> Arkansas)
+
+scala> states -= ("AL","AZ")
+res39: scala.collection.mutable.Map[String,String] = Map(CO -> Colorado, CA -> California, AR -> Arkansas)
+
+>> we can also use:
+------> Put: to add an element
+------> retain: to keep only the elements in the map
+------>remove: to remove an element by its key value
+------> clear: to delete all elements in the map
+scala> val states=collection.mutable.Map("AK"->"Alaska","IL"->"Illinois","KY"->"Kentucky")
+states: scala.collection.mutable.Map[String,String] = Map(KY -> Kentucky, IL -> Illinois, AK -> Alaska)
+
+scala> states.put("CO","Colorado")
+res40: Option[String] = None
+
+scala> states
+res41: scala.collection.mutable.Map[String,String] = Map(CO -> Colorado, KY -> Kentucky, IL -> Illinois, AK -> Alaska)
+
+scala> states.retain((k,v)=>k == "AK")
+res42: states.type = Map(AK -> Alaska)
+
+scala> states
+res43: scala.collection.mutable.Map[String,String] = Map(AK -> Alaska)
+
+scala> states.remove("AK")
+res44: Option[String] = Some(Alaska)
+
+scala> states
+res45: scala.collection.mutable.Map[String,String] = Map()
+
+scala> states.clear
+
+scala> states
+res47: scala.collection.mutable.Map[String,String] = Map()
+
+----------------------------------------------------------------
+Getting the Keys or Values from a Map -- keySet,keys,values
+----------------------------------------------------------------
+scala>  val states=collection.mutable.Map("AK"->"Alaska","IL"->"Illinois","KY"->"Kentucky")
+states: scala.collection.mutable.Map[String,String] = Map(KY -> Kentucky, IL -> Illinois, AK -> Alaska)
+
+scala> states.keySet
+res48: scala.collection.Set[String] = Set(KY, IL, AK)
+
+scala> states.keys
+res54: Iterable[String] = Set(KY, IL, AK)
+
+scala> states.values
+res55: Iterable[String] = HashMap(Kentucky, Illinois, Alaska)
+
+----------------------------------------------------------------
+Reversing Keys and Values
+----------------------------------------------------------------
+You want to reverse the contents of a map, so the values become the keys, and the keys become the values.
+
+scala> val products = Map(
+     |  "Breadsticks" -> "$5",
+     |  "Pizza" -> "$10",
+     |  "Wings" -> "$5"
+     | )
+products: scala.collection.immutable.Map[String,String] = Map(Breadsticks -> $5, Pizza -> $10, Wings -> $5)
+
+scala> products
+res27: scala.collection.immutable.Map[String,String] = Map(Breadsticks -> $5, Pizza -> $10, Wings -> $5)
+
+You can reverse the keys and values of a map with a for comprehension, being sure to
+assign the result to a new variable:
+
+scala> val reverseMap=for((k,v) <- products)yield (v,k)
+reverseMap: scala.collection.immutable.Map[String,String] = Map($5 -> Wings, $10 -> Pizza)
+
+scala> reverseMap.keys
+res28: Iterable[String] = Set($5, $10)
+
+----------------------------------------------------------------
+Check if map contains a given key or value
+-----------------------------------------------------------
+scala> products
+res27: scala.collection.immutable.Map[String,String] = Map(Breadsticks -> $5, Pizza -> $10, Wings -> $5)
+
+scala> reverseMap.contains("$5")
+res30: Boolean = true
+
+scala> reverseMap.valuesIterator.exists(_.contains("Pizza"))
+res31: Boolean = true
+
+scala> reverseMap.valuesIterator
+res32: Iterator[String] = <iterator>
+
+scala> reverseMap.valuesIterator.exists(_.contains("zza"))
+res33: Boolean = true
+
+----------------------------------------------------------------
+Filtering a Map::- retain,transform,filterKeys,filter,take
+----------------------------------------------------------------
+Use the retain method to define the elements to retain when using a mutable map, and
+use filterKeys or filter to filter the elements in a mutable or immutable map, remembering
+to assign the result to a new variable.
+
+scala> var x = collection.mutable.Map(1 -> "a", 2 -> "b", 3 -> "c")
+x: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 1 -> a, 3 -> c)
+
+scala> x.retain((k,v)=>k > 1)
+res56: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 3 -> c)
+
+scala> x
+res57: scala.collection.mutable.Map[Int,String] = Map(2 -> b, 3 -> c)
+Sorting an Existing Map by Key or Value
+
+scala> x.transform((k,v)=>v.toUpperCase)
+res58: scala.collection.mutable.Map[Int,String] = Map(2 -> B, 3 -> C)
+
+scala> x
+res59: scala.collection.mutable.Map[Int,String] = Map(2 -> B, 3 -> C)
+
+scala> val y=x.filterKeys(_>2)
+y: scala.collection.Map[Int,String] = Map(3 -> C)
+
+scala> y
+res60: scala.collection.Map[Int,String] = Map(3 -> C)
+
+scala> var m = Map(1 -> "a", 2 -> "b", 3 -> "c")
+m: scala.collection.immutable.Map[Int,String] = Map(1 -> a, 2 -> b, 3 -> c)
+
+scala> m.filter((t)=>t._1 > 1)
+res61: scala.collection.immutable.Map[Int,String] = Map(2 -> b, 3 -> c)
+
+scala> m.filter((t)=>t._2 =="c")
+res62: scala.collection.immutable.Map[Int,String] = Map(3 -> c)
+
+scala> m.take(2)
+res63: scala.collection.immutable.Map[Int,String] = Map(1 -> a, 2 -> b)
+
+--------------------------------------------------
+Sorting an Existing Map by Key or Value:-sortBy,sortWith
+--------------------------------------------------
+scala> val grades = Map("Kim" -> 90, "Al" -> 85, "Melissa" -> 95, "Emily" -> 91, "Hannah" -> 92 )
+grades: scala.collection.immutable.Map[String,Int] = Map(Hannah -> 92, Melissa -> 95, Kim -> 90, Emily -> 91, Al -> 85)
+
+scala> grades.toSeq.sortBy(_._1)
+res35: Seq[(String, Int)] = Vector((Al,85), (Emily,91), (Hannah,92), (Kim,90), (Melissa,95))
+
+//sort by key
+scala> ListMap(grades.toSeq.sortBy(_._1):_*)
+res0: scala.collection.immutable.ListMap[String,Int] = ListMap(Al -> 85, Emily -> 91, Hannah -> 92, Kim -> 90, Melissa -> 95)
+
+scala> List(grades.toSeq.sortBy(_._1))
+res3: List[Seq[(String, Int)]] = List(Vector((Al,85), (Emily,91), (Hannah,92), (Kim,90), (Melissa,95)))
+
+//sort by value
+scala> ListMap(grades.toSeq.sortBy(_._2):_*)
+res6: scala.collection.immutable.ListMap[String,Int] = ListMap(Al -> 85, Kim -> 90, Emily -> 91, Hannah -> 92, Melissa -> 95)
+
+scala> ListMap(grades.toSeq.sortWith(_._1 > _._1):_*)
+res5: scala.collection.immutable.ListMap[String,Int] = ListMap(Melissa -> 95, Kim -> 90, Hannah -> 92, Emily -> 91, Al -> 85)
+
+scala> ListMap(grades.toSeq.sortWith(_._2 > _._2):_*)
+
+All about _* 
+----------------
+_* is a special instance of type ascription which tells the compiler to treat a single 
+argument of a sequence type as a variable argument sequence, i.e. varargs.
+
+This operator tells the compiler to pass each element of the sequence to printAll as a
+separate argument, instead of passing fruits as a single List argument
+
+The _* portion of the code takes a little getting used to. It’s used to convert the data so
+it will be passed as multiple parameters to the ListMap or LinkedHashMap.
+
+scala> grades.foreach(println)
+(Hannah,92)
+(Melissa,95)
+(Kim,90)
+(Emily,91)
+(Al,85)
+
+scala> val states = Map("AL" -> "Alabama").withDefaultValue("Not found")
+states: scala.collection.immutable.Map[String,String] = Map(AL -> Alabama)
+
+--------------------------------------------------------------
+You want to find the largest value of a key or value in a map.
+--------------------------------------------------------------
+scala> grades.max
+res36: (String, Int) = (Melissa,95)
+
+scala> val grades = Map("Al" -> 80, "Kim" -> 95, "Teri" -> 85, "Julia" -> 90)
+grades: scala.collection.immutable.Map[String,Int] = Map(Al -> 80, Kim -> 95, Teri -> 85, Julia -> 90)
+
+scala> grades.max
+res8: (String, Int) = (Teri,85)
+
+scala> grades.keysIterator.max
+res9: String = Teri
+
+scala> grades.valuesIterator.max
+res10: Int = 95
+
+scala> grades.valuesIterator.reduceLeft(_ max _)
+res11: Int = 95
+
+scala> states("foo")
+res0: String = Not found
+
+
+Another approach is to use the getOrElse method when attempting to find a value. 
+It returns the default value you specify if the key isn’t found:
+scala> val s = states.getOrElse("FOO", "No such state")
+s: String = No such state
+
+---------------------------------------------
+Populating a Collection with a Range
+---------------------------------------------
+
+scala> Array.range(1,5)
+res91: Array[Int] = Array(1, 2, 3, 4)
+
+scala> List.range(1,10)
+res92: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> Vector.range(1,5)
+res94: scala.collection.immutable.Vector[Int] = Vector(1, 2, 3, 4)
+
+scala> Vector.range(1,5,2)
+res95: scala.collection.immutable.Vector[Int] = Vector(1, 3)
+
+scala> (0 until 10).toArray
+res96: Array[Int] = Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> val letter=('a' to 'f').toList
+letter: List[Char] = List(a, b, c, d, e, f)
+
+scala> val letters=('a' to 'f').by(2).toList
+letters: List[Char] = List(a, c, e)
+
+---------------------------------------------
+Merging Sequential Collections
+---------------------------------------------
+scala> val a=collection.mutable.ArrayBuffer(1,2,3)
+a: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(1, 2, 3)
+
+scala> a ++= Seq(4,5,6)
+res102: a.type = ArrayBuffer(1, 2, 3, 4, 5, 6)
+
+scala> val a =Array(1,2,3)
+a: Array[Int] = Array(1, 2, 3)
+
+scala> val b=Array(4,5,6)
+b: Array[Int] = Array(4, 5, 6)
+
+scala> val c=a ++ b
+c: Array[Int] = Array(1, 2, 3, 4, 5, 6)
+
+------------------------------------------------------------------------------------------
+Splitting Sequences into Subsets (groupBy,partition, etc.)
+------------------------------------------------------------------------------------------
+Use the groupBy, partition, span, or splitAt methods to partition a sequence into subsequences.
+
+The groupBy, partition, and span methods let you split a sequence into subsets according to a function, 
+whereas splitAt lets you split a collection into two sequences by providing an index number.
+
+
+scala> val x=List(15,10,5,8,20,12)
+x: List[Int] = List(15, 10, 5, 8, 20, 12)
+
+scala> val y=x.groupBy(_>10)
+y: scala.collection.immutable.Map[Boolean,List[Int]] = Map(false -> List(10, 5, 8), true -> List(15, 20, 12))
+
+scala> y(false)
+res104: List[Int] = List(10, 5, 8)
+
+scala> y(false).foreach(println)
+10
+5
+8
+
+scala> x.partition(_>10)
+res106: (List[Int], List[Int]) = (List(15, 20, 12),List(10, 5, 8))
+
+scala> x.span(_<20)
+res107: (List[Int], List[Int]) = (List(15, 10, 5, 8),List(20, 12))
+
+scala> x.splitAt(2)
+res108: (List[Int], List[Int]) = (List(15, 10),List(5, 8, 20, 12))
+
+scala> val(a,b)=x.partition(_>10)
+a: List[Int] = List(15, 20, 12)
+b: List[Int] = List(10, 5, 8)
+
+The sliding(size, step) method is an interesting creature that can be used to break
+a sequence into many groups. It can be called with just a size, or both a size and
+step:
+
+scala> val(a,b)=x.partition(_>10)
+a: List[Int] = List(15, 20, 12)
+b: List[Int] = List(10, 5, 8)
+
+scala> val nums=(1 to 5).toArray
+nums: Array[Int] = Array(1, 2, 3, 4, 5)
+
+scala> nums.sliding(2).toList
+res109: List[Array[Int]] = List(Array(1, 2), Array(2, 3), Array(3, 4), Array(4, 5))
+
+scala> nums.sliding(2,2).toList
+res110: List[Array[Int]] = List(Array(1, 2), Array(3, 4), Array(5))
+
+scala> nums.sliding(2,3).toList
+res111: List[Array[Int]] = List(Array(1, 2), Array(4, 5))
+
+Important Point:
+--------------------
+1)While writing a def, the types of the arguments are required.
+2)Return type can be inferred, but the parameter types cannot.
+3)toString is a method that can be called on anything in Scala, for example:
+	scala> val x = 123
+	scala> x.toString // results in a string of "123
+
+4)To run it as a script, use scala squares.sc
+
+5)To load it, start scala or sbt console, then :load squares.sc. note we use .sc 
+since otherwise sbt will try and compile it (which won't work for
+reasons we will see later)
+
+6)All objects are singletons in Scala, a companion object is an object, therefore it is a singleton
+
+7)In order to be a true companion object, it must bear the same name as a class or trait, 
+be in the same package, and be defined in the same source file.
+
+8)Companion objects are like statics in Java, they allow private behavior and state to be shared between the companions.
+
+9)Any code in the body of a class and not in a def (or a lazy val) is evaluated as a new instance of the class is created.
+
+10)Even if the constructor is marked private, it must always be called as part of class initialization. 
+Therefore if it is marked private, it must be called either by an auxiliary constructor or as 
+part of a factory method in the companion object.
+
+11)The only thing an auxiliary constructor can call is another constructor, and one 
+of them must eventually call the primary constructor to create an instance.
+
+12)Yes, the primary constructor will always be executed when creating a new instance of a class.
+
+13)Yes, when there is a type error in the scala code, before the compiler gives up, it looks to see if 
+there is an implicit conversion (or parameter) that can solve the problem, that is marked as implicit 
+and in the current scope, and if there is it will use that to correct the type error and make the code compile correctly.
+
+14)While these are indeed the three types of access Scala provides, there is no public keyword, since that is the default for vals and defs. private and protected keywords are part of the language to restrict access.
+
+15)private and protected are keywords in the language and restrict access either to the class or to the class and its subtypes. 
+While there is a public access type in Scala, it is the default for vals and defs, and there is no explicit keyword for it.
+
+
+
+
