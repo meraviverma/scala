@@ -1,0 +1,607 @@
+############# FUNCTIONS AND CLOSURES ###################
+
+1) Private and Nested Methods : Nesting method inside other method
+2)Function Literals
+3)How function literals work
+4)Higher order functions :function that produce other function
+5)Place-holder syntax
+6)Partial application of functions
+7)closures : It is a special case of function literals
+8)partial functions
+9)Var Args in functions
+10)Argument Expansion
+11)Named and default parameter
+
+Important Points:
+>The default for fields and methods in a class in public
+>There is no public key word there are protected and private keywords
+>Methods and function are interchangeable, they can be used in the same way.
+
+--------------------------------------------------
+############### FUNCTION LITERAL ################
+--------------------------------------------------
+
+Methods and functions are interchangeable. They can be used in the same way.
+
+scala> def multiplymethod(a:Int,b:Int):Int={a * b}
+multiplymethod: (a: Int, b: Int)Int
+
+scala> val  multiplyfunction:(Int,Int)=>Int=(a ,b)=>a *b
+multiplyfunction: (Int, Int) => Int = $$Lambda$1187/1089646163@3f67d229
+
+scala> def mult(a:Int,b:Int)=a*b
+mult: (a: Int, b: Int)Int
+
+scala> mult(1,2)
+res15: Int = 2
+
+scala> (a:Int,b:Int)=>a*b
+res16: (Int, Int) => Int = $$Lambda$1188/963468403@5ac30b75
+
+scala> res16(1,2)
+res17: Int = 2
+
+scala> val multfn=(a:Int,b:Int)=>a*b
+multfn: (Int, Int) => Int = $$Lambda$1194/1913760569@3c1c984f
+
+scala> multfn(2,3)
+res18: Int = 6
+--------------------------------------------------
+############### Anonymous FUNCTION Literal ################
+--------------------------------------------------
+scala functions are internally called with apply method.
+
+scala> val nums=(1 to 5).toList
+nums: List[Int] = List(1, 2, 3, 4, 5)
+
+scala> nums.map(x=>x*x)
+res19: List[Int] = List(1, 4, 9, 16, 25)
+
+scala> nums.map(x=>x * 3)
+res20: List[Int] = List(3, 6, 9, 12, 15)
+
+scala> nums.map(x=> x%2 ==0)
+res21: List[Boolean] = List(false, true, false, true, false)
+
+scala calls the apply method on any object or instance followed immediately by parents
+If we make a class or instance that overrides apply,that will be invoked by a
+function call
+
+scala> val fn1:(Int,Int)=>Int=(a,b)=>a+b
+fn1: (Int, Int) => Int = $$Lambda$1249/614739613@2e008502
+
+scala> val fn2=new Function2[Int,Int,Int]{
+     | override def apply(a:Int,b:Int)=a+b
+     | }
+fn2: (Int, Int) => Int = <function2>
+
+scala> fn1(2,3)
+res22: Int = 5
+
+scala> fn1.apply(2,3)
+res23: Int = 5
+
+scala> fn2(2,3)
+res24: Int = 5
+
+scala> fn2.apply(2,3)
+res25: Int = 5
+
+curried and tupled:
+----------------------
+
+Currying basically turns the function into something that only takes a single parameter
+but may return another.
+
+scala> val funcurried=fn1.curried
+funcurried: Int => (Int => Int) = scala.Function2$$Lambda$1299/1824945879@6356da2e
+scala> funcurried(2)(3)
+res29: Int = 5
+
+scala> funcurried.apply(2).apply(3)
+res31: Int = 5
+
+scala> val funtupled=fn1.tupled
+funtupled: ((Int, Int)) => Int = scala.Function2$$Lambda$216/849776463@4e0a57d3
+
+scala> val tup=(2,3)
+tup: (Int, Int) = (2,3)
+
+scala> funtupled(tup)
+res30: Int = 5
+--------------------------------------------------
+############### PURE FUNCTION ################
+--------------------------------------------------
+In functional programming a pure function is one that:
+• Has one or more input parameters
+• Performs calculations using only the input parameters
+• Returns a value
+• Always returns the same value for the same input
+• Does not use or affect any data outside the function
+• Is not affected by any data outside the function
+
+scala> def hi="hi"
+hi: String
+
+scala> hi
+res0: String = hi
+
+scala> def multiplier(x:Int,y:Int):Int={x * y}
+multiplier: (x: Int, y: Int)Int
+
+scala> multiplier(2,3)
+res1: Int = 6
+
+Syntax: Defining a Function
+def <identifier>(<identifier>: <type>[, ... ]): <type> = <expression>
+
+Syntax: Defining a Function with Empty Parentheses
+def <identifier>()[: <type>] = <expression>
+
+Syntax: Invoking a Function with an Expression Block
+<function identifier> <expression block>
+
+scala> def hi():String="hi"
+hi: ()String
+
+scala> def safeTime(s:String):String={
+     | if(s == null) return null
+     | s.trim()
+     | }
+safeTime: (s: String)String
+
+--------------------------------------------------
+############### PROCEDURES ################
+--------------------------------------------------
+A procedure is a function that doesn’t have a return value. Any function that ends with
+a statement, such as a println() call, is also a procedure.
+
+If you have a simple function without an explicit return type that ends with a statement, 
+the Scala compiler will infer the return type of the function to be Unit, the lack of a value.
+
+--------------------------------------------------
+############### Recursive Functions ##############
+--------------------------------------------------
+A recursive function is one that may invoke itself, preferably with some type of parameter
+or external condition that will be checked to avoid an infinite loop of function invocation.
+
+scala> def power(x:Int,n:Int):Long={
+     | if(n >= 1)x * power(x,n-1)
+     | else 1
+     | }
+power: (x: Int, n: Int)Long
+
+scala> power(2,8)
+res10: Long = 256
+
+scala> power(2,3)
+res11: Long = 8
+
+One problem with using recursive functions is running into the dreaded “Stack Overflow”
+error, where invoking a recursive function too many times eventually uses up all
+of the allocated stack space.
+
+To prevent this scenario, the Scala compiler can optimize some recursive functions with
+tail-recursion so that recursive calls do not use additional stack space.
+
+With tailrecursion–
+optimized functions, recursive invocation doesn’t create new stack space but
+instead uses the current function’s stack space.
+
+To mark a function as intended for tail-recursion, add the text @annotation.tailrec
+before the function definition
+
+----------------------------------------------------
+############### What is tail-recursion ? ###########
+----------------------------------------------------
+scala> @annotation.tailrec
+     | def power(x: Int, n: Int): Long = {
+     | if (n >= 1) x * power(x, n-1)
+     | else 1
+     | }
+<console>:14: error: could not optimize @tailrec annotated method power: it contains a recursive call not in tail position
+       if (n >= 1) x * power(x, n-1)
+                     
+Ah, the function couldn’t be optimized because the recursive call is not the last statement
+in the function.
+
+scala> @annotation.tailrec
+     |  def power(x: Int, n: Int, t: Int = 1): Int = {
+     |  if (n < 1) t
+     | else power(x, n-1, x*t)
+     |  }
+power: (x: Int, n: Int, t: Int)Int
+
+The “tailrec” annotation and successful compile guarantees that the function
+will be optimized with tail-recursion, so that each successive call will not add more stack
+frames.
+
+scala will not compile unless it can be tile call optimized
+into a WHILE Loop.
+----------------------------------------------------
+############### Nested Functions ###############
+----------------------------------------------------
+
+defining an internal function inside another function
+
+scala> def max(a:Int,b:Int,c:Int)={
+     | def max(x:Int,y:Int)=if(x>y)x else y
+     | max(a,max(b,c))
+     | }
+max: (a: Int, b: Int, c: Int)Int
+
+scala> max(2,3,4)
+res12: Int = 4
+
+functions should be firstclass.
+The term indicates that they are not only declared and invoked but can be used
+in every segment of the language as just another data type.
+
+object FactSeq{
+           def factSeq(n:Int):List[Long]={
+           @annotation.tailrec
+            def factSeqInner(n:Int,acc:List[Long],ct:Int):List[Long]={
+			if(ct > n) acc else
+			factSeqInner(n,ct*acc.head :: acc,ct +1)
+			}
+			factSeqInner(n,List(1L),2)
+           }}
+
+FactSeq.factSeq(8)		   
+----------------------------------------------------
+############### Private Methods ? ###########
+----------------------------------------------------
+Private method market private and it will not become part
+of the API that you can see from outside.
+
+scala> object FactSeq{
+           def factSeq(n:Int):List[Long]={
+			factSeqInner(n,List(1L),2)
+           }
+           @annotation.tailrec
+           private def factSeqInner(n:Int,acc:List[Long],ct:Int):List[Long]={
+			if(ct > n) acc else
+			factSeqInner(n,ct*acc.head :: acc,ct +1)
+			}
+           }
+defined object FactSeq
+
+scala> FactSeq.factSeq(8)
+res12: List[Long] = List(40320, 5040, 720, 120, 24, 6, 2, 1)
+
+scala> FactSeq.factSeq(8).reverse
+res13: List[Long] = List(1, 2, 6, 24, 120, 720, 5040, 40320)
+
+----------------------------------------------------
+############### Higher-order functions ###############
+----------------------------------------------------
+Higher order functions take other functions as parameters or return a function as a result. 
+
+If a method or function does not take or return another function, it is called a first order function.
+
+High order function simply takes a parameter that is a function lateral
+and this is the power of functional languages.
+
+scala> val nums=(1 to 10).toList
+nums: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+scala> nums.map(x=>x*x)
+res32: List[Int] = List(1, 4, 9, 16, 25, 36, 49, 64, 81, 100)
+
+scala> nums.filter(x=>x < 4)
+res33: List[Int] = List(1, 2, 3)
+
+scala> nums.span(x=> x % 4 !=0)
+res34: (List[Int], List[Int]) = (List(1, 2, 3),List(4, 5, 6, 7, 8, 9, 10))
+
+scala> nums.partition(x=>x%4 != 0)
+res35: (List[Int], List[Int]) = (List(1, 2, 3, 5, 6, 7, 9, 10),List(4, 8))
+
+Example : map() reduce() filter()
+
+This is possible because functions are first-class values in Scala.
+
+Higher order function is a function that either takes a function as argument or returns a function. 
+In other words we can say a function which works with function is called higher order function.
+
+Functions that accept other functions as parameters and/or use functions as return values are known as higher-order functions.
+
+two of the most famous higher-order functions, map() and reduce().
+
+-------------- Example --------------------------
+scala> val nums=(1 to 10).toList
+nums: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+scala> def compareNeighbors(xs: List[Int],compare:(Int,Int)=>Int):List[Int]={
+     | for (pair <- xs.sliding(2))yield {
+     | compare(pair(0),pair(1))
+     | }
+     | }.toList
+compareNeighbors: (xs: List[Int], compare: (Int, Int) => Int)List[Int]
+
+scala> compareNeighbors(nums,(a,b)=>a+b)
+res36: List[Int] = List(3, 5, 7, 9, 11, 13, 15, 17, 19)
+
+scala> compareNeighbors(List(4,1,7,3,4,8),(a,b)=>(a-b).abs)
+res38: List[Int] = List(3, 6, 4, 1, 4)
+
+abs -----> absolute value of the given signed integer value.
+
+scala> val xs=(1 to 10).toList
+xs: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+scala> xs.sliding(3) foreach println
+List(1, 2, 3)
+List(2, 3, 4)
+List(3, 4, 5)
+List(4, 5, 6)
+List(5, 6, 7)
+List(6, 7, 8)
+List(7, 8, 9)
+List(8, 9, 10)
+
+scala> xs.sliding(2) foreach println
+List(1, 2)
+List(2, 3)
+List(3, 4)
+List(4, 5)
+List(5, 6)
+List(6, 7)
+List(7, 8)
+List(8, 9)
+List(9, 10)
+
+It creates a sliding window of three items.
+
+Example 2:
+--------------
+scala> val nums=(1 to 10).toList
+nums: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+scala> def compareNeighbors(xs:List[Int],compare:(Int,Int)=>Int):List[Int]={
+     | for(pair <- xs.sliding(2))yield {
+     | compare(pair(0),pair(1))
+     | }
+     | }.toList
+compareNeighbors: (xs: List[Int], compare: (Int, Int) => Int)List[Int]
+
+scala> compareNeighbors(nums,_+_)
+res72: List[Int] = List(3, 5, 7, 9, 11, 13, 15, 17, 19)
+
+scala> compareNeighbors(nums,(a,b)=>a + b)
+res74: List[Int] = List(3, 5, 7, 9, 11, 13, 15, 17, 19)
+
+---------------------------------------------
+
+scala> val salary=List(10,20,30)
+salary: List[Int] = List(10, 20, 30)
+
+scala> val doublesal=(x:Int)=>x*2
+doublesal: Int => Int = $$Lambda$1105/1125059683@25a52a60
+
+scala> val newsalary=salary.map(doublesal)
+newsalary: List[Int] = List(20, 40, 60)
+
+or
+
+val salaries = Seq(20000, 70000, 40000)
+val newSalaries = salaries.map(x => x * 2) // List(40000, 140000, 80000)
+
+
+or
+
+val salaries = Seq(20000, 70000, 40000)
+val newSalaries = salaries.map(_ * 2)
+
+or
+
+scala> def dsal(x:Int):Int={x*2}
+dsal: (x: Int)Int
+
+scala> val news=salary.map(dsal)
+news: List[Int] = List(20, 40, 60)
+
+----------------------------------------------------
+########### Partial Application of functions #######
+----------------------------------------------------
+>> Not to be confused with Partial Functions
+>>Basically partially filling the function.
+>> we can partially leave all the item.
+
+scala> val add3Nums=(a:Int,b:Int,c:Int)=>a+b+c
+add3Nums: (Int, Int, Int) => Int = $$Lambda$1517/1948024403@659eb7df
+
+scala> val add6and3=add3Nums(6,(_:Int),3)
+add6and3: Int => Int = $$Lambda$1518/1973233194@11985afd
+
+scala> add6and3(5)
+res75: Int = 14
+
+scala> def add3Method(a:Int,b:Int,c:Int)=a+b+c
+add3Method: (a: Int, b: Int, c: Int)Int
+
+scala> val add3functionv1=add3Method(_,_,_)
+add3functionv1: (Int, Int, Int) => Int = $$Lambda$1533/507536444@928f4ca
+
+scala> add3functionv1(1,2,3)
+res76: Int = 6
+
+----------------------------------------------------
+########### CLOSURES #######
+----------------------------------------------------
+>>Closures are a distinct subgroup
+>>All closures are function literals,but not all function literal are closures
+>>A closures is so called because it encloses around some other state than that passed
+in to the function as parameter.
+>>Closures are subset of function literal.
+>>What makes it a closure is that it encloses around some state in the scope from the scope surrounding
+
+A function whose return value depends on variable(s) declared outside it, is a closure.
+
+scala> var c=7
+c: Int = 7
+scala> val sum1=(a:Int,b:Int)=>(a+b)*c
+sum1: (Int, Int) => Int = $$Lambda$1103/1497170291@4a0a93ce
+
+scala> sum1(2,3)
+res3: Int = 35
+
+So, while ‘sum’ is trivially closed over itself, ‘sum1’ refers to ‘c’ every time we call it, and reads its current value. Let’s try changing the value of c:
+
+scala> c=8
+c: Int = 8
+We changed ‘c’ from 7 to 8. Let’s try calling sum1 again:
+
+scala> sum1(2,3)
+res5: Int = 40
+
+scala> val more=10
+more: Int = 10
+
+scala> val incByMore=(x:Int)=>x+more
+incByMore: Int => Int = $$Lambda$1535/708793246@74048e7c
+
+scala> incByMore(10)
+res79: Int = 20
+
+scala>
+
+scala> var more = 10
+more: Int = 10
+
+scala> val incByMore=(x:Int)=>x+more
+incByMore: Int => Int = $$Lambda$1536/1467737751@66089348
+
+scala> incByMore(12)
+res80: Int = 22
+
+scala> more=100
+more: Int = 100
+
+scala> incByMore(12)
+res81: Int = 112
+
+----------------------------------------------------
+################ Partial Functions #################
+----------------------------------------------------
+>>Not to be confused with partially applied functions
+>>A PartialFunction[T,R] extends Function[T,R](which is idiomatically
+written T=>R)
+>>It can be used in place of any function1[T,R]
+>>Any block of code with case inside of {} is a Partial Function:
+>>The act of creating curly braces and then immediately following it by one or more case 
+defines a partial function in scala.
+>>curly braces followed by case that defines a partial function.
+>>Anything you see after curly braces case statement then it is a Partial Functions.
+
+scala> val pf1:PartialFunction[Int,Int]={
+     | case x:Int if x > 0 => x + x
+     | case x => x * -1
+     | }
+pf1: PartialFunction[Int,Int] = <function1>
+
+scala> val fn1:Int=>Int=pf1
+fn1: Int => Int = <function1>
+
+scala> val nums=(-5 to 5).toList
+nums: List[Int] = List(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5)
+
+scala> nums.map(pf1)
+res82: List[Int] = List(5, 4, 3, 2, 1, 0, 2, 4, 6, 8, 10)
+
+------------- Example 2 ---------------
+>>map may not be safe with a PartialFunction,but collect is:
+
+scala> val pf2:PartialFunction[Int,Int]={
+     | case x:Int if x > 0 => x +x
+     | }
+pf2: PartialFunction[Int,Int] = <function1>
+
+scala> nums.map(pf2)
+scala.MatchError: -5 (of class java.lang.Integer)
+  at scala.PartialFunction$$anon$1.apply(PartialFunction.scala:255)
+  at scala.PartialFunction$$anon$1.apply(PartialFunction.scala:253)
+  at $anonfun$1.applyOrElse(<console>:11)
+  at $anonfun$1.applyOrElse(<console>:11)
+  at scala.runtime.AbstractPartialFunction$mcII$sp.apply$mcII$sp(AbstractPartialFunction.scala:34)
+  at scala.runtime.AbstractPartialFunction$mcII$sp.apply(AbstractPartialFunction.scala:34)
+  at scala.runtime.AbstractPartialFunction$mcII$sp.apply(AbstractPartialFunction.scala:26)
+  at scala.collection.immutable.List.map(List.scala:282)
+  ... 28 elided
+
+scala> nums.collect(pf2)
+res84: List[Int] = List(2, 4, 6, 8, 10)
+
+----------------------------------------------------
+Vararg Parameters
+----------------------------------------------------
+A function parameter that can match zero or more arguments from the caller.
+
+vararg parameters, so you can define a function with a variable number of input arguments. The vararg parameter cannot be followed by a nonvararg
+parameter because there would be no way to distinguish them.
+
+Varag doesn’t need to be the only parameter to a method but it must be final parameter to a method
+------------Example 1 -----------------------
+scala> def sayHello(names:String*):Unit={
+     | for(name <- names)println(s"Hello ,$name")
+     | }
+sayHello: (names: String*)Unit
+
+scala> sayHello()
+
+scala> sayHello("Fred")
+Hello ,Fred
+
+scala> sayHello("Fred","Julie","Kim")
+Hello ,Fred
+Hello ,Julie
+Hello ,Kim
+
+----------------------------------------------
+-----------Example 2 -------------------------
+scala> def greet(greeting:String,names:String*):Seq[String]={
+     | for(name<-names)yield s"$greeting $name"
+     | }
+greet: (greeting: String, names: String*)Seq[String]
+
+scala> greet("Yo","Ravi","Jitender","Steve")
+res89: Seq[String] = ArrayBuffer(Yo Ravi, Yo Jitender, Yo Steve)
+
+------------------Example 3----------------------------
+Greeting List of Names.
+
+scala> val name=List("Fred","Ravi","Steve")
+name: List[String] = List(Fred, Ravi, Steve)
+
+scala> greet("Yo",name:_*)
+res90: Seq[String] = List(Yo Fred, Yo Ravi, Yo Steve)
+
+----------------------------------------------
+scala> def sum(items:Int*):Int={
+     | var total=0
+     | for(i <- items)total += i
+     | total
+     | }
+sum: (items: Int*)Int
+
+scala> sum(10,20)
+res0: Int = 30
+
+scala> sum(10,10,20)
+res1: Int = 40
+
+scala> def mul(items:Int*):Int={
+     | var total=1
+     | for(i<-items)total=i*total
+     | total
+     | }
+mul: (items: Int*)Int
+
+scala> mul(2,3,4)
+res2: Int = 24
+
+scala> mul(2,3,4,1)
+res3: Int = 24
+
+scala> mul(2,3,4,1,2)
+res4: Int = 48
