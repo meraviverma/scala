@@ -1,0 +1,210 @@
+-----------------------------------
+#######Control Structure########
+-----------------------------------
+>>Scala’s if/then/else structure is similar to Java, 
+but can also be used to return a value.
+>>The try/catch/finally structure is similar to Java, though Scala 
+uses pattern matching in the catch clause.
+In Scala you could write two for
+loops as follows to read every line in a file and then operate on each character in each line:
+Example:
+for (line <- source.getLines) {
+for {
+char <- line
+if char.isLetter
+} // char algorithm here ...
+}
+But with Scala’s for loop mojo, you can write this code even more concisely:
+for {
+line <- source.getLines
+char <- line
+if char.isLetter
+} // char algorithm here ...
+
+--------------------------------
+Looping with for and foreach
+--------------------------------
+for loops, while loops and collection methods like foreach,map,flatMap
+
+scala> val a=Array("apple","banana","orange")
+a: Array[String] = Array(apple, banana, orange)
+
+scala> for(item <- a)println()
+
+scala> for(item <- a)println(item)
+apple
+banana
+orange
+
+Returning values from a for loop
+---------------------------------
+Those examples perform an operation using the elements in an array, but they don’t
+return a value you can use, such as a new array. In cases where you want to build a new
+collection from the input collection, use the for/yield combination:
+
+scala> val newArray = for (e <- a) yield e.toUpperCase
+newArray: Array[java.lang.String] = Array(APPLE, BANANA, ORANGE)
+
+Generator and guards:
+-------------------------
+scala> for(i <- 1 to 3)println(i)
+1
+2
+3
+
+scala> 1 to 3
+res15: scala.collection.immutable.Range.Inclusive = Range 1 to 3
+
+scala> for(i <- 1 to 10 if i <4)println(i)
+1
+2
+3
+
+Looping Over a Map:
+-----------------------
+scala> val names=Map("fname"->"Robert","lname"->"Goren")
+names: scala.collection.immutable.Map[String,String] = Map(fname -> Robert, lname -> Goren)
+
+scala> for((k,v)<-names)println(s"key: $k,value:$v")
+key: fname,value:Robert
+key: lname,value:Goren
+
+when you use the for/yield combination with a collection, you’re building and returning 
+a new collection, but when you use a for loop without yield, you’re just operating on 
+each element in the collection you’re not creating a new collection. 
+The for/yield combination is referred to as a for comprehension
+
+foreach loop:
+-------------------
+scala> a.foreach(println)
+apple
+banana
+orange
+
+scala> a.foreach(e=>println(e.toUpperCase))
+APPLE
+BANANA
+ORANGE
+
+scala> for(e<-a)(println(e.toUpperCase))
+APPLE
+BANANA
+ORANGE
+
+scala> 1.to(10).foreach(((i)=>println(i)))
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+You can create a for loop with two counters like this:
+-------------------------------------------------------
+Ranges created with the <- symbol in for loops are referred to as generators
+scala> for(i<-1 to 2;j<-1 to 2)println(s"i=$i,j=$j")
+i=1,j=1
+i=1,j=2
+i=2,j=1
+i=2,j=2
+
+scala> for{
+     | i<- 1 to 2
+     | j<- 1 to 2
+     | }println(s"i=$i,j=$j")
+i=1,j=1
+i=1,j=2
+i=2,j=1
+i=2,j=2
+
+println all even number from 1 to 10.
+
+scala> for(i <- 1 to 10 if i %2 ==0)println(i)
+2
+4
+6
+8
+10
+
+Break and Continue:
+----------------------
+It’s true that Scala doesn’t have break and continue keywords, but it does offer similar
+functionality through scala.util.control.Breaks.
+
+Note that break and breakable aren’t actually keywords; they’re methods in
+scala.util.control.Breaks.
+
+import util.control.Breaks._
+object BreakAndContinueDemo extends App {
+println("\n=== BREAK EXAMPLE ===")
+breakable {
+	for (i <- 1 to 10) {
+		println(i)
+		if (i > 4) break // break out of the for loop
+	}
+}
+
+scala> import util.control.Breaks._
+import util.control.Breaks._
+
+scala> breakable{
+     | for(i<- 1 to 10){
+     | println(i)
+     | if(i>4)break
+     | }
+     | }
+1
+2
+3
+4
+5
+
+Search P character in a string
+------------------------------
+scala> val searchMe = "peter piper picked a peck of pickled peppers"
+searchMe: String = peter piper picked a peck of pickled peppers
+
+scala> var numPs = 0
+numPs: Int = 0
+
+scala> for (i <- 0 until searchMe.length) {
+     | breakable {
+     | if (searchMe.charAt(i) != 'p') {
+     | break // break out of the 'breakable', continue the outside loop
+     | } else {
+     | numPs += 1
+     | }
+     | }
+     | }
+
+scala> println("Found " + numPs + " p's in the string.")
+Found 9 p's in the string.
+
+In some situations, you may need nested break statements.
+-----------------------------------------------------------
+package com.alvinalexander.labeledbreaks
+object LabeledBreakDemo extends App {
+	import scala.util.control._
+	val Inner = new Breaks
+	val Outer = new Breaks
+	Outer.breakable {
+		for (i <- 1 to 5) {
+			Inner.breakable {
+				for (j <- 'a' to 'e') {
+					if (i == 1 && j == 'c') Inner.break else println(s"i: $i, j: $j")
+					if (i == 2 && j == 'b') Outer.break
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
