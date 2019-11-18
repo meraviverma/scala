@@ -146,6 +146,13 @@ res12: Int = 3
 -----------------------------------
 ###############Tuple################
 -----------------------------------
+>> Internally they have defined a class. 
+>> A tuple can have only 22 elements.
+>> You can have nested tuple.
+>> when ever we want to return multiple data type you can use tuple.
+>>Like we have tuple class we have product class, we can extend from 22 elements.
+>>  define your own class and extend Product class. Example:Class abc extends Product { now you can extend 22 elements}
+
 scala> val t=(10,"scala",true)
 t: (Int, String, Boolean) = (10,scala,true)
 
@@ -157,6 +164,32 @@ res1: String = scala
 
 scala> t._3
 res2: Boolean = true
+
+scala> val t="s"->"Scala"
+t: (String, String) = (s,Scala)
+
+scala> t._1
+res3: String = s
+
+scala> t._2
+res4: String = Scala
+
+Nested Tuple::
+------------------------
+scala> val t="s"->"Scala"->"java"
+t: ((String, String), String) = ((s,Scala),java)
+
+scala> t._1
+res7: (String, String) = (s,Scala)
+
+scala> t._2
+res8: String = java
+
+scala> t._1._1
+res9: String = s
+
+scala> t._1._2
+res10: String = Scala
 -----------------------------------
 ###############List################
 -----------------------------------
