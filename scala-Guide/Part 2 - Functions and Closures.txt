@@ -644,6 +644,33 @@ scala.MatchError: -5 (of class java.lang.Integer)
 
 scala> nums.collect(pf2)
 res84: List[Int] = List(2, 4, 6, 8, 10)
+---------------------------------------------------------
+Partial - Applied function and currying function
+---------------------------------------------------------
+scala> def factor(x:Int,y:Int)=y%x ==0
+factor: (x: Int, y: Int)Boolean
+
+scala> val isEven=factor(5,_:Int)
+isEven: Int => Boolean = $$Lambda$915/1084148278@1b06148b
+
+scala> isEven(15)
+res41: Boolean = true
+
+currying function
+--------------------
+currying is the technique of translating the evaluation of a function that 
+takes multiple arguments into evaluating a sequence of functions, each with a single argument.
+
+grouping parameter is called currying
+
+scala> def factor(x:Int)(y:Int)=y%x==0
+factor: (x: Int)(y: Int)Boolean
+
+scala> val isEven=factor(2)_
+isEven: Int => Boolean = $$Lambda$916/1138060675@44473eed
+
+scala> isEven(4)
+res42: Boolean = true
 
 ----------------------------------------------------
 Vararg Parameters
