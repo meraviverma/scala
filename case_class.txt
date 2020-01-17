@@ -1,0 +1,6 @@
+Case Class::
+-----------------
+Scala case classes are just regular classes which are immutable by default and decomposable through pattern matching.
+It uses equal method to compare instance structurally. It does not use new keyword to instantiate object.
+All the parameters listed in the case class are public and immutable by default.
+
