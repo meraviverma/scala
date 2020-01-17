@@ -1,6 +1,40 @@
 Case Class::
 -----------------
 Scala case classes are just regular classes which are immutable by default and decomposable through pattern matching.
-It uses equal method to compare instance structurally. It does not use new keyword to instantiate object.
+It uses equal method to compare instance structurally. 
+It does not use new keyword to instantiate object.
+To create a Scala Object of a case class, we don’t use the keyword ‘new’. This is because its default apply() method handles the creation of objects.
 All the parameters listed in the case class are public and immutable by default.
+Case classes support pattern matching. So, you can use that in patterns.
+A case class which has no arguments is declared as case object instead of case class. case object is serializeable by default.
+A scala case class also has all vals, which means they are immutable.
+We can change the case inside the case class by making it var.It is by default val.
+Example:: case class caseclass(var a:Int,b:Int)
 
+Shallow-Copying a Scala Case Class
+------------------------------------
+Since a Scala case class is immutable, we might sometimes need a copy to make changes in without changing the original. 
+So, we now see how to create a shallow copy of it. But before that, let’s see a little about shallow and deep copies.
+
+A deep copy is a copy to another object where any changes we make to it don’t reflect in the original object.
+A shallow copy, however, is one where changes to the copy do reflect in the original.
+
+So, Scala uses the method copy() to carry out a shallow copy.
+
+scala> val chandelier1=chandelier.copy()
+chandelier1: Song = Song(Chandelier,Sia Furler,3)
+
+scala> val chandelier2=chandelier.copy(title=chandelier.artist,artist="Sia")
+chandelier2: Song = Song(Sia Furler,Sia,3)
+
+As opposed to a “regular” Scala class, a case class generates a lot of code for you, with the following benefits:
+-----------------------------------------------------------------------------------------------------------------
+
+1) An apply method is generated, so you don’t need to use the new keyword to create a new instance of the class.
+2)Accessor methods are generated for each constructor parameter, because case class constructor parameters are public val fields by default.
+(You won’t use var fields in this book, but if you did, mutator methods would also be generated for constructor parameters declared as var.)
+3)An unapply method is generated, which makes it easy to use case classes in match expressions. 
+This is huge for Scala/FP.
+4)As you’ll see in the next lesson, a copy method is generated. I never use this in Scala/OOP code, you’ll use it all the time in Scala/FP.
+5)equals and hashCode methods are generated, which lets you compare objects and easily use them as keys in maps (and sets).
+6)A default toString method is generated, which is helpful for debugging.
