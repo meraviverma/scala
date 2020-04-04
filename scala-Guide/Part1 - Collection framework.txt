@@ -1397,5 +1397,44 @@ and in the current scope, and if there is it will use that to correct the type e
 While there is a public access type in Scala, it is the default for vals and defs, and there is no explicit keyword for it.
 
 
+------------------------------------------------------------------------------------------
+Scala Option[ T ]
+------------------------------------------------------------------------------------------
+Scala Option[ T ] is a container for zero or one element of a given type. 
+An Option[T] can be either Some[T] or None object, which represents a missing value. 
+For instance, the get method of Scala's Map produces Some(value) if a value corresponding to a given key has been found, or None if the given key is not defined in the Map.
 
+Option type is used frequently in Scala programs and you can compare this with the null value available in Java which indicate no value. For example, the get method of java.util.HashMap returns either a value stored in the HashMap, or null if no value was found.
+
+the get method of Scala’s Map produces Some(value) if a value corresponding to a given key has been found, or
+None if the given key is not defined in the Map.
+
+Example::
+
+object Demo {
+  def main(args: Array[String]) {
+      val capitals = Map("France" -> "Paris", "Japan" -> "Tokyo")
+      
+      println("capitals.get( \"France\" ) : " +  capitals.get( "France" ))
+      println("capitals.get( \"India\" ) : " +  capitals.get( "India" ))
+   
+  
+  def show(x: Option[String]) = x match {
+      case Some(s) => s
+      case None => "?"
+   }
+  println(show(capitals get "Japan"))
+  println(show(capitals get "India"))
+  }
+
+OUTPUT:
+capitals.get( "France" ) : Some(Paris)
+capitals.get( "India" ) : None
+Tokyo
+?
+
+The Option type in the standard library uses case classes to express values that might or might not be present. The case subclass Some wraps a value, for example Some("Fred").
+
+The get method of the Map class returns an Option. If there is no value for a given
+key, get returns None. Otherwise, it wraps the value inside Some.
 

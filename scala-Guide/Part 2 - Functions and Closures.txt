@@ -656,8 +656,9 @@ isEven: Int => Boolean = $$Lambda$915/1084148278@1b06148b
 scala> isEven(15)
 res41: Boolean = true
 
+----------------------------------------
 currying function
---------------------
+---------------------------------------
 currying is the technique of translating the evaluation of a function that 
 takes multiple arguments into evaluating a sequence of functions, each with a single argument.
 
@@ -671,6 +672,37 @@ isEven: Int => Boolean = $$Lambda$916/1138060675@44473eed
 
 scala> isEven(4)
 res42: Boolean = true
+
+----------Currying Function-------------
+scala> def plainoldsum(x:Int,y:Int)=x+y
+plainoldsum: (x: Int, y: Int)Int
+
+scala> plainoldsum(1,2)
+res0: Int = 3
+
+scala> def curriedfunction(x:Int)(y:Int)=x+y
+curriedfunction: (x: Int)(y: Int)Int
+
+scala> curriedfunction(1)(2)
+res1: Int = 3
+
+scala> def first(x:Int)=(y:Int)=>x + y
+first: (x: Int)Int => Int
+
+scala> val second=first(1)
+second: Int => Int = $$Lambda$1101/873249151@6a1568d6
+
+scala> second(2)
+res2: Int = 3
+
+
+scala> val oneplus=curriedfunction(1)_
+oneplus: Int => Int = $$Lambda$1113/1531506932@546ed2a0
+
+scala> oneplus(2)
+res3: Int = 3
+
+scala>
 
 ----------------------------------------------------
 Vararg Parameters
