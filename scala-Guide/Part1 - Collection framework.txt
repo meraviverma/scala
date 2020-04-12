@@ -1,4 +1,6 @@
 ---------- ######### Scala Collection ######------------
+https://pixipanda.com/
+
 >Scala is an OOP and functional programming language
 >Array--->Mutable (underneath is java array)- May be grown, may be updated.
 >List--Immutable (Implemented as data structure),Duplicates allowed
@@ -1438,3 +1440,25 @@ The Option type in the standard library uses case classes to express values that
 The get method of the Map class returns an Option. If there is no value for a given
 key, get returns None. Otherwise, it wraps the value inside Some.
 
+----------------------------------------------
+Monads in Scala
+----------------------------------------------
+Monads is a construction which performs successive calculations. 
+It is an object which covers the other object. It is worth noting that here, the output of an operation at some step is an input to another computations, which is a parent to the recent step of the program stated.
+ 
+Monad is neither a class nor a trait, it is a concept. 
+
+The maximum collections of the Scala are Monads but not all the Monads are collections, there are several Monads which are containers like Options in Scala. In short, we can say that in Scala the data types that implements map as well as flatMap() like Options, Lists, etc. are called as Monads.
+
+The objects are enclosed with Monads as it yields the following two functions:
+
+unit() : It is like void in Java, it does not returns any data types.
+flatMap() : It is similar to the map() in Scala but it returns a series in place of returning a single component.
+
+Note: Collections that support map as well as flatMap are called as monadic. 
+
+Monads are containers. That means they contain some sort of elements. Instead of allowing us to operate on these elements directly, the container itself has certain properties. We can then work with the container and the container works with the element within.
+
+When we create a monad around a value, we say that we lift the value into the container.
+
+Scala’s Option type is a monad

@@ -1,0 +1,206 @@
+abstract classes, 
+parameterless methods, 
+extending classes, 
+overriding methods and fields, 
+parametric fields, invoking superclass constructors, polymorphism and dynamic
+binding, final members and classes, and factory objects and methods.
+
+CASE Class
+-------------------------------
+Scala feature that provides support for functional programming is the case class. A case class has all of the functionality of a regular class, and more.
+ 
+When the compiler sees the case keyword in front of a class, it generates code for you, with the following benefits:
+
+1)	Case class constructor parameters are public val fields by default, so accessor methods are generated for each parameter.
+2)	An apply method is created in the companion object of the class, so you don’t need to use the new keyword to create a new instance of the class.
+3)	An unapply method is generated, which lets you use case classes in more ways in match expressions.
+4)	A copy method is generated in the class. You may not use this feature in Scala/OOP code, but it’s used all the time in Scala/FP.
+5)	equals and hashCode methods are generated, which let you compare objects and easily use them as keys in maps.
+6)	A default toString method is generated, which is helpful for debugging.
+
+Case class constructor parameters are val fields by default, so an accessor method is generated for each parameter:
+
+scala> christina.name
+res0: String = Christina
+But, mutator methods are not generated:
+
+// can't mutate the `name` field
+scala> christina.name = "Fred"
+<console>:10: error: reassignment to val
+       christina.name = "Fred"
+                  ^
+NOTE::: Because in FP you never mutate data structures, it makes sense that constructor fields default to val.
+
+An apply method means you don’t need new
+
+When you define a class as a case class, you don’t have to use the new keyword to create a new instance:
+
+Example::
+-----------------
+scala> trait person{
+     | def name:String
+     | }
+defined trait person
+
+scala> case class Student(name:String,year:Int)extends person
+defined class Student
+
+scala> case class Teacher(name:String,special:String) extends person
+defined class Teacher
+
+scala> def getPrintableString(p:person):String=p match{
+     | case Student(name,year)=>
+     | s"$name is a student in year $year."
+     | case Teacher(name,whatTheyTeach)=>
+     | s"$name teaches $whatTheyTeach."
+     | }
+getPrintableString: (p: person)String
+
+scala> val s=Student("Al",1)
+s: Student = Student(Al,1)
+
+scala> val t=Teacher("Bob Donnan","Mathematics")
+t: Teacher = Teacher(Bob Donnan,Mathematics)
+
+
+scala> getPrintableString(s)
+res0: String = Al is a student in year 1.
+
+scala> getPrintableString(t)
+res1: String = Bob Donnan teaches Mathematics.
+
+
+composition and inheritance.
+-------------------------------
+Composition means one class holds a reference to another, using the referenced class to help it fulfill its mission. 
+Inheritance is the superclass/subclass relationship.
+
+composing operators above and beside.
+
+Classes, fields, and methods
+-------------------------------
+A class is a blueprint for objects. Once you define a class, you can create
+objects from the class blueprint with the keyword new.
+
+An object is a class that has exactly one instance. It is created lazily when it is referenced, like a lazy val.
+As a top-level value, an object is a singleton.
+As a member of an enclosing class or as a local value, it behaves exactly like a lazy val.
+
+-----------------------------------
+singleton Object
+----------------------------------
+one way in which Scala is more object-oriented than Java is that classes in Scala cannot have static members. 
+Instead, Scala has singleton objects. 
+
+A Singleton object is an object which defines a single object of a class.
+
+A singleton object definition looks like a class definition,except instead of the keyword class you use the keyword object.
+
+Scala does not contain any concept of static keyword. Instead of static keyword Scala has singleton object. 
+
+A singleton object provides an entry point to your program execution. 
+If you do not create a singleton object in your program, then your code compile successfully but does not give output. 
+So you required a singleton object to get the output of your program. A singleton object is created by using object keyword.
+ 
+ 
+Important points about singleton object
+
+1)	The method in the singleton object is globally accessible.
+2)	You are not allowed to create an instance of singleton object.
+3)	You are not allowed to pass parameter in the primary constructor of singleton object.
+4)	In Scala, a singleton object can extend class and traits.
+5)	In Scala, a main method is always present in singleton object.
+6)	The method in the singleton object is accessed with the name of the object(just like calling static method in Java), so there is no need to create an object to access this method.
+
+--------------------------------
+Companion Oject
+--------------------------------
+Companion object is known as an object whose name is same as the name of the class.
+
+when an object and a class have the same name, then that object is known as the companion object and the class is known as companion class.
+
+A companion object is defined in the same source file in which the class is defined. 
+
+A companion object is allowed to access both private methods and private fields of the class.
+
+-------------------------
+Extending a Class
+------------------------
+You extend a class in Scala just like you would in Java—with the extends keyword:
+As in Java, you can declare a class final so that it cannot be extended. You can also declare individual methods or fields final so that they cannot be overridden.
+
+------------------------
+Overriding Methods
+------------------------
+In Scala, you must use the override modifier when you override a method that isn’t abstract.
+
+Invoking a superclass method in Scala works exactly like in Java, with the keyword super:
+
+------------------------
+Abstract Class
+------------------------
+Scala also has a concept of an abstract class that is similar to Java’s abstract class. But because traits are so powerful, you rarely need to use an abstract class. In fact, you only need to use an abstract class when:
+
+1)You want to create a base class that requires constructor arguments 
+2)Your Scala code will be called from Java code
+
+
+NOTE: Scala traits don’t allow constructor parameters:
+
+// this won’t compile
+trait Animal(name: String)
+Therefore, you need to use an abstract class whenever a base behavior must have constructor parameters:
+
+abstract class Animal(name: String)
+
+------------------------
+SCALA TRAITS
+------------------------
+Traits are a fundamental unit of code reuse in Scala.
+A trait encapsulates method and field definitions, which can then be reused by mixing them into classes.
+
+Once a trait is defined, it can be mixed in to a class using either the extends or with keywords.
+
+scala> trait Philosophical{
+     | def philosophize(){
+     | println("I am trait")
+     | }
+     | }
+defined trait Philosophical
+
+scala> class frog extends Philosophical{
+     | override def toString="green"
+     | }
+defined class frog
+
+scala> val frog=new frog
+frog: frog = green
+
+scala> frog.philosophize
+I am trait
+
+-----------------------------------------
+A trait also defines a type. Here’s an example in which Philosophical is used as a type:
+
+scala> val phil:Philosophical = frog
+phil: Philosophical = green
+
+scala> phil.philosophize
+I am trait
+
+scala>
+
+Mixing in a trait using with.
+-----------------------------------
+class Animal
+class Frog extends Animal with Philosophical {
+override def toString = "green"
+}
+
+Mixing in multiple traits
+-----------------------------·
+class Animal
+trait HasLegs
+class Frog extends Animal with Philosophical with HasLegs {
+override def toString = "green"
+}

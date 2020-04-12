@@ -557,7 +557,7 @@ scala> val sum1=(a:Int,b:Int)=>(a+b)*c
 sum1: (Int, Int) => Int = $$Lambda$1103/1497170291@4a0a93ce
 
 scala> sum1(2,3)
-res3: Int = 35
+res3: Int = 35sss
 
 So, while ‘sum’ is trivially closed over itself, ‘sum1’ refers to ‘c’ every time we call it, and reads its current value. Let’s try changing the value of c:
 
@@ -598,12 +598,10 @@ res81: Int = 112
 ################ Partial Functions #################
 ----------------------------------------------------
 >>Not to be confused with partially applied functions
->>A PartialFunction[T,R] extends Function[T,R](which is idiomatically
-written T=>R)
+>>A PartialFunction[T,R] extends Function[T,R](which is idiomatically written T=>R)
 >>It can be used in place of any function1[T,R]
 >>Any block of code with case inside of {} is a Partial Function:
->>The act of creating curly braces and then immediately following it by one or more case 
-defines a partial function in scala.
+>>The act of creating curly braces and then immediately following it by one or more case  defines a partial function in scala.
 >>curly braces followed by case that defines a partial function.
 >>Anything you see after curly braces case statement then it is a Partial Functions.
 
