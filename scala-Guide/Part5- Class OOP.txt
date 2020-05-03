@@ -5,6 +5,63 @@ overriding methods and fields,
 parametric fields, invoking superclass constructors, polymorphism and dynamic
 binding, final members and classes, and factory objects and methods.
 
+----------------------------------
+Class
+-------------------------------
+scala> class Person(var firstName: String, var lastName: String) {
+     |
+     |     println("the constructor begins")
+     |
+     |     // 'public' access by default
+     |     var age = 0
+     |
+     |     // some class fields
+     |     private val HOME = System.getProperty("user.home")
+     |
+     |     // some methods
+     |     override def toString(): String = s"$firstName $lastName is $age years old"
+     |
+     |     def printHome(): Unit = println(s"HOME = $HOME")
+     |     def printFullName(): Unit = println(this)
+     |
+     |     printHome()
+     |     printFullName()
+     |     println("you've reached the end of the constructor")
+     |
+     | }
+defined class Person
+
+scala> val p = new Person("Kim", "Carnes")
+the constructor begins
+HOME = C:\Users\User
+Kim Carnes is 0 years old
+you've reached the end of the constructor
+p: Person = Kim Carnes is 0 years old
+
+scala> p.age
+res3: Int = 0
+
+scala> p.age=36
+p.age: Int = 36
+
+scala> p
+res4: Person = Kim Carnes is 36 years old
+
+scala> p.printHome
+HOME = C:\Users\User
+
+scala> p.printFullName
+Kim Carnes is 36 years old
+
+Class Parameter::
+---------------------
+You can pass value into an instance of a class using one or more parameter to the constructor
+	>	You can specify the type of parameter
+	>	The values are internally visible for the life of the class instance
+	>	They cannot be accessed from outside of the class instance.
+	
+
+-------------------------------
 CASE Class
 -------------------------------
 Scala feature that provides support for functional programming is the case class. A case class has all of the functionality of a regular class, and more.
@@ -31,10 +88,24 @@ scala> christina.name = "Fred"
                   ^
 NOTE::: Because in FP you never mutate data structures, it makes sense that constructor fields default to val.
 
+Apply Method:
+--------------------
 An apply method means you don’t need new
 
 When you define a class as a case class, you don’t have to use the new keyword to create a new instance:
 
+Example:
+scala> case class Person(name: String, relation: String)
+defined class Person
+
+// "new" not needed before Person
+scala> val christina = Person("Christina", "niece")
+christina: Person = Person(Christina,niece)
+
+UNAPPLY Method
+------------------------
+Great thing about case classes is that they automatically generate an unapply method, so you don’t have to write one.
+ 
 Example::
 -----------------
 scala> trait person{
@@ -69,6 +140,44 @@ res0: String = Al is a student in year 1.
 scala> getPrintableString(t)
 res1: String = Bob Donnan teaches Mathematics.
 
+copy method
+-----------------------
+A case class also has an automatically-generated copy method that’s extremely helpful when you need to perform the process of 
+a) cloning an object and 
+b) updating one or more of the fields during the cloning process. 
+
+scala> case class BaseballTeam(name:String,lastworldserieswin:Int)
+defined class BaseballTeam
+
+scala> val cubs1908=BaseballTeam("India",1908)
+cubs1908: BaseballTeam = BaseballTeam(India,1908)
+
+scala> val cubs2016=cubs1908.copy(name="IndiaA")
+cubs2016: BaseballTeam = BaseballTeam(IndiaA,1908)
+
+equals and hashCode methods
+-------------------------------
+Case classes also have automatically-generated equals and hashCode methods, so instances can be compared:
+
+Example::
+-----------
+scala> case class Person(name: String, relation: String)
+defined class Person
+
+scala> val christina = Person("Christina", "niece")
+christina: Person = Person(Christina,niece)
+
+scala> val hannah = Person("Hannah", "niece")
+hannah: Person = Person(Hannah,niece)
+
+scala> christina == hannah
+res2: Boolean = false
+
+scala>
+
+toString methods
+-----------------------
+Finally, case classes also have a good default toString method implementation, which at the very least is helpful when debugging code:
 
 composition and inheritance.
 -------------------------------
@@ -112,9 +221,9 @@ Important points about singleton object
 5)	In Scala, a main method is always present in singleton object.
 6)	The method in the singleton object is accessed with the name of the object(just like calling static method in Java), so there is no need to create an object to access this method.
 
---------------------------------
-Companion Oject
---------------------------------
+-----------------------------------------------------
+				Companion Oject
+-----------------------------------------------------
 Companion object is known as an object whose name is same as the name of the class.
 
 when an object and a class have the same name, then that object is known as the companion object and the class is known as companion class.
@@ -122,6 +231,61 @@ when an object and a class have the same name, then that object is known as the 
 A companion object is defined in the same source file in which the class is defined. 
 
 A companion object is allowed to access both private methods and private fields of the class.
+First, a companion object and its class can access each other’s private members (fields and methods). 
+
+Example::
+----------------------
+scala> class Person {
+     |     var name: Option[String] = None
+     |     var age: Option[Int] = None
+     |     override def toString = s"$name, $age"
+     | }
+defined class Person
+warning: previously defined object Person is not a companion to class Person.
+Companions must be defined together; you may wish to use :paste mode for this.
+
+scala> object Person {
+     |
+     |     // a one-arg constructor
+     |     def apply(name: Option[String]): Person = {
+     |         var p = new Person
+     |         p.name = name
+     |         p
+     |     }
+     |
+     |     // a two-arg constructor
+     |     def apply(name: Option[String], age: Option[Int]): Person = {
+     |         var p = new Person
+     |         p.name = name
+     |         p.age = age
+     |         p
+     |     }
+     |
+     | }
+defined object Person
+warning: previously defined class Person is not a companion to object Person.
+Companions must be defined together; you may wish to use :paste mode for this.
+
+scala> val p1 = Person(Some("Fred"))
+p1: Person = Some(Fred), None
+
+scala> val p2 = Person(None)
+p2: Person = None, None
+
+scala>
+
+scala> val p3 = Person(Some("Wilma"), Some(33))
+p3: Person = Some(Wilma), Some(33)
+
+scala> val p4 = Person(Some("Wilma"), None)
+p4: Person = Some(Wilma), None
+
+The key points of this lesson are:
+-----------------------------------------
+1)	A companion object is an object that’s declared in the same file as a class, and has the same name as the class
+2)	A companion object and its class can access each other’s private members
+3)	A companion object’s apply method lets you create new instances of a class without using the new keyword
+4)	A companion object’s unapply method lets you de-construct an instance of a class into its individual components
 
 -------------------------
 Extending a Class
@@ -204,3 +368,74 @@ trait HasLegs
 class Frog extends Animal with Philosophical with HasLegs {
 override def toString = "green"
 }
+
+scala> trait Pet{
+     | def speak=println("Yo")
+     | def comeToMaster():Unit
+     | }
+defined trait Pet
+
+scala> class Dog(name:String)extends Pet{
+     | def comeToMaster():Unit=println("Woo-hoo,I'm come!")
+     | }
+defined class Dog
+
+scala> val d=new Dog("Zeus")
+d: Dog = Dog@3212bfd
+
+scala> d.speak
+Yo
+
+scala> d.comeToMaster
+Woo-hoo,I'm come!
+
+
+Overriding an implemented method
+----------------------------------
+scala> class Cat extends Pet{
+     | override def speak():Unit=println("meow")
+     | def comeToMaster():Unit=println("That's not gonna happen")
+     | }
+defined class Cat
+
+scala> val c=new Cat
+c: Cat = Cat@e7b0bec
+
+scala> c.speak
+meow
+
+scala> c.comeToMaster
+That's not gonna happen
+
+scala> trait Speaker{
+     | def speak():String
+     | }
+defined trait Speaker
+
+scala> trait TailWagger{
+     | def startTail():Unit=println("tail is wagging")
+     | def stopTail():Unit=println("tail is stopped")
+     | }
+defined trait TailWagger
+
+scala> trait Runner{
+     | def startRunning():Unit=println("I'm running")
+     | def stopRunning:Unit=println("Stopped running")
+     | }
+defined trait Runner
+
+scala> class Dog(name:String) extends Speaker with TailWagger with Runner{
+     | def speak():String = "Woof!"
+     | }
+defined class Dog
+
+scala> class Cat extends Speaker with TailWagger with Runner {
+     |     def speak(): String = "Meow"
+     |     override def startRunning(): Unit = println("Yeah ... I don't run")
+     |     override def stopRunning(): Unit = println("No need to stop")
+     | }
+defined class Cat
+
+scala> d.speak
+Yo
+

@@ -540,12 +540,31 @@ scala> add3functionv1(1,2,3)
 res76: Int = 6
 
 ----------------------------------------------------
+########### Partial Application of functions #######
+----------------------------------------------------
+>	All the argument are not available to the function.
+>	When you are applying function you don't have to pass values for all parameter defined by the function but you pass values only for some of the
+parameter leaving the remaining ones blank.
+
+scala> def finalBillCalculator(serviceCharge:Int,vat:Int,netBill:Double):Double={
+     | netBill + (serviceCharge * netBill)/100+(vat*netBill)/100
+     | }
+finalBillCalculator: (serviceCharge: Int, vat: Int, netBill: Double)Double
+
+scala> val myBillCalculator=finalBillCalculator(12,20,_:Double)
+myBillCalculator: Double => Double = $$Lambda$1103/550351186@1142d377
+
+scala> myBillCalculator(120)
+res1: Double = 158.4
+
+
+
+----------------------------------------------------
 ########### CLOSURES #######
 ----------------------------------------------------
 >>Closures are a distinct subgroup
 >>All closures are function literals,but not all function literal are closures
->>A closures is so called because it encloses around some other state than that passed
-in to the function as parameter.
+>>A closures is so called because it encloses around some other state than that passed in to the function as parameter.
 >>Closures are subset of function literal.
 >>What makes it a closure is that it encloses around some state in the scope from the scope surrounding
 
@@ -594,17 +613,196 @@ more: Int = 100
 scala> incByMore(12)
 res81: Int = 112
 
+Example::
+------------------
+scala> val serviceCharge:Double=14
+serviceCharge: Double = 14.0
+
+
+scala> val bill = (netBill:Double)=>netBill*(1+serviceCharge/100)
+bill: Double => Double = $$Lambda$1093/942523415@3daf03d8
+
+scala> bill(30)
+res0: Double = 34.2
+
+Ex1:
+-----------
+scala> class Cafe(val serviceCharge:Double){
+     | val finalBill=(netBill:Double)=>netBill*(1+serviceCharge/100)
+     | }
+defined class Cafe
+
+scala> val cityCafe=new Cafe(14)
+cityCafe: Cafe = Cafe@11c88cca
+
+scala> val beachCafe=new Cafe(20)
+beachCafe: Cafe = Cafe@1a2ac487
+
+scala> cityCafe.finalBill(30)
+res1: Double = 34.2
+
+scala> beachCafe.finalBill(30)
+res2: Double = 36.0
+
 ----------------------------------------------------
 ################ Partial Functions #################
 ----------------------------------------------------
->>Not to be confused with partially applied functions
->>A PartialFunction[T,R] extends Function[T,R](which is idiomatically written T=>R)
->>It can be used in place of any function1[T,R]
->>Any block of code with case inside of {} is a Partial Function:
->>The act of creating curly braces and then immediately following it by one or more case  defines a partial function in scala.
->>curly braces followed by case that defines a partial function.
->>Anything you see after curly braces case statement then it is a Partial Functions.
+>>	Not to be confused with partially applied functions
+>>	A PartialFunction[T,R] extends Function[T,R](which is idiomatically written T=>R)
+>>	It can be used in place of any function1[T,R]
+>>	Any block of code with case inside of {} is a Partial Function:
+>>	The act of creating curly braces and then immediately following it by one or more case  defines a partial function in scala.
+>>	curly braces followed by case that defines a partial function.
+>>	Anything you see after curly braces case statement then it is a Partial Functions.
 
+A partial function of type PartialFunction[A, B] is a unary function where the domain does not necessarily include all values of type A. The function isDefinedAt allows [you] to test dynamically if a value is in the domain of the function.
+
+
+>> Partial function are only partially implemented.It doesnot cover every possible value of incoming parameter it can cater to only a subset 
+of possible data that it has been defined for in scala partial function can be defined to query if a function can handle a particular value.
+
+>> The main distinction between `PartialFunction` and [[scala.Function1]] is that the user of a `PartialFunction` may choose to do something different with input that is declared to be outside its domain.
+
+>>	partial functions is with the collect method on collections’ classes. The collect method takes a partial function as input, and as its Scaladoc describes, collect “Builds a new collection by applying a partial function to all elements of this list on which the function is defined.”
+
+The signature of the PartialFunction trait looks like this:
+
+trait PartialFunction[-A, +B] extends (A) => B
+
+Helper Function::
+1) Collect
+2) orElse
+3) andThen
+
+scala> val squareroot=new PartialFunction[Double,Double]{
+     | def apply(x:Double)=Math.sqrt(x)
+     | def isDefinedAt(x:Double)=x > 0
+     | }
+squareroot: PartialFunction[Double,Double] = <function1>
+
+
+scala> squareroot.isDefinedAt(9)
+res1: Boolean = true
+
+scala> squareroot(9)
+res2: Double = 3.0
+
+scala> squareroot.isDefinedAt(-9)
+res3: Boolean = false
+
+Example::
+---------------------------------------------
+scala> val divide=new PartialFunction[Int,Int]{
+     | def apply(x:Int)=42/x
+     | def isDefinedAt(x:Int)=x !=0
+     | }
+divide: PartialFunction[Int,Int] = <function1>
+
+scala> divide.isDefinedAt(1)
+res4: Boolean = true
+
+scala> if(divide.isDefinedAt(1)) divide(1)
+res5: AnyVal = 42
+
+scala> divide.isDefinedAt(0)
+res6: Boolean = false
+
+
+partial functions are often written using case statements:
+
+scala> val divide2:PartialFunction[Int,Int]={
+     | case d:Int if d != 0 => 42/d
+     | }
+divide2: PartialFunction[Int,Int] = <function1>
+
+scala> divide2.isDefinedAt(0)
+res7: Boolean = false
+
+scala> divide2.isDefinedAt(1)
+res8: Boolean = true
+
+Although this code doesn’t explicitly implement the isDefinedAt method, it works exactly the same as the previous divide function definition:
+
+scala> val f: PartialFunction[Int, Any] = { case _ => 1/0 }
+f: PartialFunction[Int,Any] = <function1>
+
+scala> f(5)
+java.lang.ArithmeticException: / by zero
+  at $anonfun$1.applyOrElse(<console>:11)
+  at $anonfun$1.applyOrElse(<console>:11)
+  at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:34)
+  ... 27 elided
+
+scala> f.isDefinedAt(5)
+res10: Boolean = true
+------------------------------------------------------------
+
+collect::
+--------------------------
+scala> val isEven:PartialFunction[Int,String]={
+     | case x if x % 2 == 0 => x+" is even"
+     | }
+isEven: PartialFunction[Int,String] = <function1>
+
+scala> val evennumber=sample collect isEven
+evennumber: scala.collection.immutable.IndexedSeq[String] = Vector(2 is even, 4 is even, 6 is even, 8 is even, 10 is even)
+
+the method collect can use isDefinedAt to select which members to collect
+
+collect method is written to test the isDefinedAt method for each element it’s given. As a result, it doesn’t run the divide algorithm when the input value is 0 (but does run it for every other element).
+
+scala> val divide:PartialFunction[Int,Int]={
+     | case d: Int if d!= 0 => 42/d
+     | }
+divide: PartialFunction[Int,Int] = <function1>
+
+scala> List(0,1,2) map{divide}
+scala.MatchError: 0 (of class java.lang.Integer)
+  at scala.PartialFunction$$anon$1.apply(PartialFunction.scala:254)
+  at scala.PartialFunction$$anon$1.apply(PartialFunction.scala:252)
+  at $anonfun$1.applyOrElse(<console>:12)
+  at $anonfun$1.applyOrElse(<console>:11)
+  at scala.runtime.AbstractPartialFunction$mcII$sp.apply$mcII$sp(AbstractPartialFunction.scala:34)
+  at scala.runtime.AbstractPartialFunction$mcII$sp.apply(AbstractPartialFunction.scala:34)
+  at scala.runtime.AbstractPartialFunction$mcII$sp.apply(AbstractPartialFunction.scala:26)
+  at scala.collection.immutable.List.map(List.scala:272)
+  ... 27 elided
+
+scala> List(0,1,2) collect {divide}
+res12: List[Int] = List(42, 21)
+
+
+collect method work in other situations, such as passing it a List that contains a mix of data types, with a function that works only with Int values:
+
+scala> List(42,"cat")collect{ case i:Int => i+1}
+res0: List[Int] = List(43)
+
+scala> List(42,"cat")map{ case i:Int => i+1}
+scala.MatchError: cat (of class java.lang.String)
+  at .$anonfun$res1$1(<console>:12)
+  at .$anonfun$res1$1$adapted(<console>:12)
+  at scala.collection.immutable.List.map(List.scala:276)
+  ... 27 elided
+
+
+
+--------------------------------------------------------
+
+orElse : the method orElse allows chaining another partial function to handle input outside the declared domain
+----------------
+scala> val isOdd:PartialFunction[Int,String]={
+     | case x if x % 2 == 1 => x+ " is Odd"
+     | }
+isOdd: PartialFunction[Int,String] = <function1>
+
+scala> val number=sample map(isEven orElse isOdd )
+number: scala.collection.immutable.IndexedSeq[String] = Vector(1 is Odd, 2is even, 3 is Odd, 4is even, 5 is Odd, 6is even, 7 is Odd, 8is even, 9 is Odd, 10is even)
+
+
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
 scala> val pf1:PartialFunction[Int,Int]={
      | case x:Int if x > 0 => x + x
      | case x => x * -1
@@ -654,9 +852,9 @@ isEven: Int => Boolean = $$Lambda$915/1084148278@1b06148b
 scala> isEven(15)
 res41: Boolean = true
 
-----------------------------------------
-currying function
----------------------------------------
+------------------------------------------------------------------------
+####################### currying function ##########################
+-----------------------------------------------------------------------------
 currying is the technique of translating the evaluation of a function that 
 takes multiple arguments into evaluating a sequence of functions, each with a single argument.
 
@@ -775,3 +973,169 @@ res3: Int = 24
 
 scala> mul(2,3,4,1,2)
 res4: Int = 48
+
+
+------------------------------------------
+Lazy Evaluation
+-----------------------------------------
+>	values are not computed until needed.
+>	Opposite to eager evaluation or strict evaluation
+>	Lazy evaluation can also be used to resolve circular dependencies. 
+>	lazy keyword in scala
+>	Lazy evaluation allows "call by name" , passing an unevaluated expression.
+>	scala support call-by-value or strict evaluation and call-by-name or lazy evaluation.
+
+scala> val e={
+     | println("evaluating")
+     | 9
+     | }
+evaluating
+e: Int = 9
+
+scala> lazy val l={
+     | println("evaluating")
+     | 9
+     | }
+l: Int = <lazy>
+
+scala> l
+evaluating
+res2: Int = 9
+
+--------------------------------------
+scala> class Eager{
+     | val e={
+     | println("evaluating eager")
+     | 9
+     | }
+     | }
+defined class Eager
+
+scala> class lazyeager{
+     | lazy val l={
+     | println("evaluating lazy")
+     | }
+     | }
+defined class lazyeager
+
+scala> val x= new Eager()
+evaluating eager
+x: Eager = Eager@432448
+
+scala> val y= new lazyeager()
+y: lazyeager = lazyeager@29d29657
+
+scala> y.l
+evaluating lazy
+
+--------------------------------------
+
+Evaluate expression before calling. 5 
+def method1(n:Int)
+	method1(2+3)
+	
+This Method will pass the expression and leave to be lazy evaluated.	
+def method2(n:=>Int)
+		method2(2+3)
+
+---------------- Example -----------------------
+scala> def method1(n:Int){
+     | println("method 1")
+     | println(n)
+     | }
+method1: (n: Int)Unit
+
+		
+scala> def method2(n: =>Int){
+     | println("Method 2")
+     | println(n)
+     | }
+method2: (n: => Int)Unit
+
+scala> val add=(a:Int,b:Int)=>{println("Add numbers"); a + b }
+add: (Int, Int) => Int = $$Lambda$1092/421293587@68ea253b
+
+scala> method1(add(3,4))
+Add numbers
+method 1
+7
+
+scala> method2(add(3,4))
+Method 2
+Add numbers
+7
+
+Difference between Val and Def
+-----------------------------------
+scala> val isEvenVal=(i:Int)=>i%2 == 0
+isEvenVal: Int => Boolean = $$Lambda$1070/705957093@70716259
+
+scala> def isEvenDef(i:Int)=i%2 == 0
+isEvenDef: (i: Int)Boolean
+
+scala> val xs=List(1,2,3,4)
+xs: List[Int] = List(1, 2, 3, 4)
+
+scala> xs.filter(isEvenVal)
+res0: List[Int] = List(2, 4)
+
+scala> xs.filter(isEvenDef)
+res1: List[Int] = List(2, 4)
+
+
+scala> val f:(Any)=>String={
+     | case i:Int=>"Int"
+     | case d:Double=>"Double"
+     | case _=>"Other"
+     | }
+f: Any => String = $$Lambda$1241/91201775@5e278e25
+
+scala> f(1)
+res2: String = Int
+
+scala> f(1d)
+res3: String = Double
+
+scala> f(1f)
+res4: String = Other
+
+scala> f("a")
+res5: String = Other
+
+
+`val` functions
+---------------------------
+val add=(a:Int,b:Int)=>a + b
+
+scala> val add=(a:Int,b:Int)=>a+b
+add: (Int, Int) => Int = $$Lambda$1085/1250315597@7d3691e1
+
+A val function has these attributes:
+>>	It is 100% correct to use the term “function” when referring to it.
+
+`def` functions
+-----------------------
+What I call a “def function” looks like this:
+
+scala> def addDef(a:Int,b:Int)=a+b
+addDef: (a: Int, b: Int)Int
+
+It has these attributes:
+
+>>	It is not 100% correct to use the term “function” when referring to it. Technically, it is not a function.
+>>	It is a method that needs to be defined within a class or object.
+
+A sequence of cases in curly braces can be used anywhere a function literal can be used.
+
+scala> List(1,2,3,4).filter({case i:Int=>i%2 == 0 })
+res2: List[Int] = List(2, 4)
+
+scala> List(1,2,3,4).filter(i=>i%2 == 0)
+res3: List[Int] = List(2, 4)
+
+
+scala> val misc=List("adam","alvin","scott")
+misc: List[String] = List(adam, alvin, scott)
+
+scala> misc.map({case s:String=>s.length > 4})
+res4: List[Boolean] = List(false, true, true)

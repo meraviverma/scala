@@ -1403,14 +1403,30 @@ While there is a public access type in Scala, it is the default for vals and def
 Scala Option[ T ]
 ------------------------------------------------------------------------------------------
 Scala Option[ T ] is a container for zero or one element of a given type. 
+
+Scala Try to solve the problem of null pointer exception through the Option[T].
+
+Options are scala container that can be used to test the presenece and absence of value.
+
+They offer type safe alternative to specify the null value in java.
+
+Option objects provide type safety and error handling at the same time.
+
+We can use .get method to fetch the result. But if there is no result and we try to fetch the result we get no such element exception
+
+Scala Option has two helper method "is defined" and "is empty" to deal with this. 
+
 An Option[T] can be either Some[T] or None object, which represents a missing value. 
+
 For instance, the get method of Scala's Map produces Some(value) if a value corresponding to a given key has been found, or None if the given key is not defined in the Map.
 
 Option type is used frequently in Scala programs and you can compare this with the null value available in Java which indicate no value. For example, the get method of java.util.HashMap returns either a value stored in the HashMap, or null if no value was found.
 
-the get method of Scala’s Map produces Some(value) if a value corresponding to a given key has been found, or
-None if the given key is not defined in the Map.
+the get method of Scala’s Map produces Some(value) if a value corresponding to a given key has been found, or None if the given key is not defined in the Map.
 
+Example: In a form we have gender which is optional, We can have some value for it or None.
+
+You can apply pattern match and other higher-order functions on options to fetch the value inside the option container 
 Example::
 
 object Demo {
@@ -1435,17 +1451,36 @@ capitals.get( "India" ) : None
 Tokyo
 ?
 
+-----------------------
+Example::
+-----------------------
+scala> def frac(num:Double,den:Double):Option[Double]={
+     | if(den==0)None
+     | else Some(num/den)
+     | }
+frac: (num: Double, den: Double)Option[Double]
+
+scala> frac(10,2)
+res1: Option[Double] = Some(5.0)
+
+scala> frac(10,0)
+res2: Option[Double] = None
+
+scala> frac(10,2).get
+res5: Double = 5.0
+
 The Option type in the standard library uses case classes to express values that might or might not be present. The case subclass Some wraps a value, for example Some("Fred").
 
-The get method of the Map class returns an Option. If there is no value for a given
-key, get returns None. Otherwise, it wraps the value inside Some.
+The get method of the Map class returns an Option. If there is no value for a given key, get returns None. Otherwise, it wraps the value inside Some.
 
 ----------------------------------------------
 Monads in Scala
 ----------------------------------------------
 Monads is a construction which performs successive calculations. 
 It is an object which covers the other object. It is worth noting that here, the output of an operation at some step is an input to another computations, which is a parent to the recent step of the program stated.
- 
+
+A Monad is an object that wraps another object. You pass the Monad mini-programs, i.e functions, to perform the data manipulation of the underlying object, instead of manipulating the object directly.  Monad chooses how to apply the program to the underlying object.
+
 Monad is neither a class nor a trait, it is a concept. 
 
 The maximum collections of the Scala are Monads but not all the Monads are collections, there are several Monads which are containers like Options in Scala. In short, we can say that in Scala the data types that implements map as well as flatMap() like Options, Lists, etc. are called as Monads.
@@ -1462,3 +1497,12 @@ Monads are containers. That means they contain some sort of elements. Instead of
 When we create a monad around a value, we say that we lift the value into the container.
 
 Scala’s Option type is a monad
+
+Scala Extractors
+---------------------------------
+Extarct Pattern because we are extracting the property of an object 
+APPLY Method
+---------------------------
+As a general rule in scala whenever you have an object whether it is singleton object or an instance object 
+followed by paranethesis that gets expanded out to call to the apply method and 
+so if you want to have an object that works as a function or you wish to have a class whose instance will work as functions you can define the apply method

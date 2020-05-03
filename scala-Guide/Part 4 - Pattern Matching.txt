@@ -491,3 +491,15 @@ println(s"$k is $v")}                             //> 1 is one
                                                   //| 2 is two
                                                   //| 3 is three
 }
+
+
+
+ object PatternMatcher{
+     def main(args:Array[String]){
+     val inputDay=args(0)
+     inputDay match{
+     case "saturday"=>println("Weekend Started")
+     case "sunday"=>println("Still in weekend")
+      }
+      }
+      }
