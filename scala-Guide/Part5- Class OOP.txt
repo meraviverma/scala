@@ -205,7 +205,7 @@ A Singleton object is an object which defines a single object of a class.
 
 A singleton object definition looks like a class definition,except instead of the keyword class you use the keyword object.
 
-Scala does not contain any concept of static keyword. Instead of static keyword Scala has singleton object. 
+Scala does not contain any concept of static keyword. Instead of static keyword Scala has singleton object.
 
 A singleton object provides an entry point to your program execution. 
 If you do not create a singleton object in your program, then your code compile successfully but does not give output. 
@@ -231,7 +231,17 @@ when an object and a class have the same name, then that object is known as the 
 A companion object is defined in the same source file in which the class is defined. 
 
 A companion object is allowed to access both private methods and private fields of the class.
+
 First, a companion object and its class can access each other’s private members (fields and methods). 
+
+A companion object and its class can access each other’s private members (fields and methods).
+
+The key points of this lesson are:
+
+>>	A companion object is an object that’s declared in the same file as a class, and has the same name as the class
+>>	A companion object and its class can access each other’s private members
+>>	A companion object’s apply method lets you create new instances of a class without using the new keyword
+>>	A companion object’s unapply method lets you de-construct an instance of a class into its individual components
 
 Example::
 ----------------------

@@ -222,6 +222,9 @@ before the function definition
 ----------------------------------------------------
 ############### What is tail-recursion ? ###########
 ----------------------------------------------------
+import scala.annotation._
+@tailrec over method call.
+
 scala> @annotation.tailrec
      | def power(x: Int, n: Int): Long = {
      | if (n >= 1) x * power(x, n-1)
@@ -246,6 +249,45 @@ frames.
 
 scala will not compile unless it can be tile call optimized
 into a WHILE Loop.
+
+Example::
+---------------
+scala> def sum(num:Int,res:Int):Int={
+     | if(num == 1)res
+     | else sum(num -1,res + num)
+     | }
+sum: (num: Int, res: Int)Int
+
+scala> sum(99999,1)
+res3: Int = 704982704
+
+scala> sum(999999,1)
+res4: Int = 1783293664
+
+scala> sum(9999999,1)
+res5: Int = -2014260032
+
+scala> import scala.annotation._
+import scala.annotation._
+
+scala> @tailrec
+     | def sum(num:Int,res:Int):Int={
+     | if(num == 1) res
+     | else sum(num-1,res+num)
+     | }
+sum: (num: Int, res: Int)Int
+
+scala> sum(99999,1)
+res6: Int = 704982704
+
+scala> sum(999999,1)
+res7: Int = 1783293664
+
+scala> sum(9999999,1)
+res8: Int = -2014260032
+
+
+
 ----------------------------------------------------
 ############### Nested Functions ###############
 ----------------------------------------------------
@@ -304,6 +346,8 @@ res13: List[Long] = List(1, 2, 6, 24, 120, 720, 5040, 40320)
 ############### Higher-order functions ###############
 ----------------------------------------------------
 Higher order functions take other functions as parameters or return a function as a result. 
+
+>> If a function or a method doesn't take or return a function 	it's called first order.
 
 If a method or function does not take or return another function, it is called a first order function.
 
@@ -562,13 +606,15 @@ res1: Double = 158.4
 ----------------------------------------------------
 ########### CLOSURES #######
 ----------------------------------------------------
+A function whose return value depends on variable(s) declared outside it, is a closure.
+
 >>Closures are a distinct subgroup
 >>All closures are function literals,but not all function literal are closures
 >>A closures is so called because it encloses around some other state than that passed in to the function as parameter.
 >>Closures are subset of function literal.
 >>What makes it a closure is that it encloses around some state in the scope from the scope surrounding
 
-A function whose return value depends on variable(s) declared outside it, is a closure.
+
 
 scala> var c=7
 c: Int = 7

@@ -198,6 +198,8 @@ res10: String = Scala
 They are immutable.
 The Scala List class is immutable, so its size as well as the elements it refers to can’t change.
 
+Performance and memory efficient for head operation
+
 When changed it doesn't change original list but gives us a new list.Ex:
 
 The definition of the second list is incorrect, resulting in a compiler error. 
@@ -215,6 +217,7 @@ collect,flatMap,map
 max,min,product,sum
 contains,endsWith,exists,forall,startsWith
 fold,foldLeft,foldRight,reduce,reduceLeft,reduceRight,
+Factorymethods: fill,tabulate,range
 -----------------------------------
 Ways to create List:
 -------------------------
@@ -1500,9 +1503,24 @@ Scala’s Option type is a monad
 
 Scala Extractors
 ---------------------------------
+https://blog.knoldus.com/extractors-in-scala/
+
+An extractor is an object that has an unapply method. It takes an object as an input and gives back arguments. Custom extractors are created using the unapply method. 
+
+This method extracts an object and returns back the attributes. This method is also used in Pattern matching and Partial functions. Extractors also explains apply method, which takes the arguments and constructs an object so, it’s helpful in constructing values. The unapply method reverses the construction procedure of the apply method.
+
 Extarct Pattern because we are extracting the property of an object 
 APPLY Method
 ---------------------------
 As a general rule in scala whenever you have an object whether it is singleton object or an instance object 
 followed by paranethesis that gets expanded out to call to the apply method and 
 so if you want to have an object that works as a function or you wish to have a class whose instance will work as functions you can define the apply method
+
+The return type of the unapply method can be selected like stated below:
+----------------------------------------------------------------------------
+>>	If it is a checking procedure then return a Boolean Type.
+>>	If the procedure is returning only one sub-value of type T, then return an Option[T].
+>>	If the procedure is returning various sub-values of type T1, T2, …, Tn then return an optional tuple i.e, Option[(T1, T2, …, Tn)].
+>>	If the procedure returns an unpredictable number of values, then the extractors can be defined with an unapplySeq that returns an Option[Seq[T]].
+
+
