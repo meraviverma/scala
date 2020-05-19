@@ -1,0 +1,58 @@
+Scala Constructor:
+---------------------
+Scala has two types of constructor.
+1. Primary constructor
+2. Auxiliary constructor
+
+-----------------------
+Primary Constructor:
+-----------------------
+A Scala class can contain one and only one primary constructor.
+
+1)	The primary constructor can have zero or more parameters.
+2)	The parameters of parameter-list are declared using var within the constructor then the value could change. Scala also generates getter and setter methods for that field.
+3)	The parameters of parameter-list are declared using val within the constructor then the value cannot change And Scala also generates only a getter method for that field.
+4)	The parameters of parameter-list are declared without using val or var in the constructor, then the visibility of the field is very compact and Scala does not generate any getter and setter methods for that field.
+5)	The parameters of parameter-list are declared using private val or var in the constructor then it prevents from generating any getter and setter methods for that field. So, these fields can be accessed by the members of that class.
+5)	In Scala, only a primary constructor is allowed to invoke a superclass constructor.
+
+			------------------------------------------------
+					Auxilary Constructor:
+			------------------------------------------------
+A scala class can contain zero or more auxiliary constructor.
+The auxiliary constructor in Scala is used for constructor overloading and defined as a method using this name.
+The auxiliary constructor must call either previously defined auxiliary constructor or primary constructor in the first line of its body. 
+Hence every auxiliary constructor invokes directly or indirectly to a primary constructor.
+
+A scala class can contain zero or more auxiliary constructor.
+1)The auxiliary constructor in Scala is used for constructor overloading and defined as a method using this name.
+2)The auxiliary constructor must call either previously defined auxiliary constructor or primary constructor in the first line of its body. 
+Hence every auxiliary constructor invokes directly or indirectly to a primary constructor.
+
+There are several important points to this recipe:
+1)	Auxiliary constructors are defined by creating methods named this.
+2)	Each auxiliary constructor must begin with a call to a previously defined constructor.
+3)	Each constructor must have a different signature.
+4)	One constructor calls another constructor with the name this.
+
+As the name suggests, Auxiliary constructor is an additional or say secondary constructor which can be defined when we need more than one. 
+That means constructors other than primary constructors are known as Auxiliary constructors.
+
+Auxiliary constructors are defined using this keyword.
+The body of auxiliary constructor should eventually invoke the primary constructor which means, 
+every constructor invocation will end up calling the primary constructor of the class. 
+
+This is because a primary constructor is the only entry point to a class.
+
+Also, call to this should be the first statement of any auxiliary constructor, otherwise it may lead in the compile-time error. 
+This is a rule which we follow in java as well. But in java, it is not mandatory to call any other constructor.
+
+Also, any or all constructors in java can invoke a superclass constructor, but in Scala, the only primary constructor 
+is responsible to call the superclass constructor.
+
+
+Some Important Points About Auxiliary Constructor
+In a single class, we are allowed to create one or more than one auxiliary constructors, but they have different signatures or parameter-lists.
+Each auxiliary constructor must call one of the previously defined constructors, this would be primary constructor or previous auxiliary constructor.
+The invoke constructor may be a primary or previous auxiliary constructor that comes textually before the calling constructor.
+The first statement of the auxiliary constructor must contain this keyword.

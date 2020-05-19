@@ -1,0 +1,137 @@
+package com.mytut
+
+object AuxConstructorDemo {
+  println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
+  
+ //A scala class can contain zero or more auxiliary constructor.
+//The auxiliary constructor in Scala is used for constructor overloading and defined as a method using this name.
+//The auxiliary constructor must call either previously defined auxiliary constructor or primary constructor in the first line of its body.
+//Hence every auxiliary constructor invokes directly or indirectly to a primary constructor.
+
+class Employee(empId:Int,name:String,salary:Double){
+	def this(){
+			this(2,"ram",200)
+			println(s"zero-argument aux cons: $empId $name $salary")
+	}
+	println(s"Primary constructor $empId $name $salary")
+	}
+	
+	val emp=new Employee(1,"ravi",333)        //> Primary constructor 1 ravi 333.0
+                                                  //| emp  : com.mytut.AuxConstructorDemo.Employee = com.mytut.AuxConstructorDemo$
+                                                  //| Employee$1@5594a1b5
+	
+	//See the above code, when we create an object using zero-argument auxiliary constructor then
+	//there is the first statement this(0,””,0.0) which will call to a primary constructor.
+	//Hence first Primary constructor body will be executed then after auxiliary constructor body.
+	
+	class Phone(sim1:String,sim2:String){
+		def this(sim:String)=this(sim,"")
+		
+		def printDetails={
+		println(s"Details of sim 1 : $sim1")
+		if(sim2.length>0)println(s"Details of Sim2: $sim2")
+		}
+	}
+	
+	val ph=new Phone("ravi","ram")            //> ph  : com.mytut.AuxConstructorDemo.Phone = com.mytut.AuxConstructorDemo$Pho
+                                                  //| ne$1@6a5fc7f7
+	ph.printDetails                           //> Details of sim 1 : ravi
+                                                  //| Details of Sim2: ram
+	
+	
+	//Other examples:
+	// Scala program to illustrate the
+// concept of more than concept
+// Auxiliary Constructor
+
+// Primary constructor
+		class Company{
+			
+			private var Cname = ""
+			private var Employee = 0
+			
+			// Creating function
+			def show()
+			{
+				println("Language name: " + Cname);
+				println("Total number of employee: " + Employee);
+			}
+		
+			// An auxiliary constructor
+			def this(Cname: String)
+			{
+				// Calls primary constructor
+				this()
+				this.Cname = Cname
+			}
+		
+			// Another auxiliary constructor
+			def this(Cname: String, Employee: Int)
+			{
+				// Calls previous auxiliary constructor
+				this(Cname)
+				this.Employee = Employee
+			}
+		}
+
+		// Primary constructor
+		val c1 = new Company              //> c1  : com.mytut.AuxConstructorDemo.Company = com.mytut.AuxConstructorDemo$C
+                                                  //| ompany$1@3b6eb2ec
+		c1.show()                         //> Language name: 
+                                                  //| Total number of employee: 0
+		
+		// First auxiliary constructor
+		val c2 = new Company("GeeksForGeeks")
+                                                  //> c2  : com.mytut.AuxConstructorDemo.Company = com.mytut.AuxConstructorDemo$C
+                                                  //| ompany$1@1e643faf
+		c2.show()                         //> Language name: GeeksForGeeks
+                                                  //| Total number of employee: 0
+		
+		// Second auxiliary constructor
+		val c3 = new Company("GeeksForGeeks", 42)
+                                                  //> c3  : com.mytut.AuxConstructorDemo.Company = com.mytut.AuxConstructorDemo$C
+                                                  //| ompany$1@6e8dacdf
+		c3.show()                         //> Language name: GeeksForGeeks
+                                                  //| Total number of employee: 42
+		
+	 
+	 
+	 //One more example
+	 // Scala program to illustrate the
+// concept of Auxiliary Constructor
+
+// Primary constructor
+				class GFG( Lname: String, Tname: String)
+						{
+							var no: Int = 0;;
+							def show()
+							{
+								println("Language name: " + Lname);
+								println("Topic name: " + Tname);
+								println("Total number of articles: " + no);
+								
+							}
+							
+							// Auxiliary Constructor
+							def this(Lname: String, Tname: String, no:Int)
+							{
+								
+								// Invoking primary constructor
+								this(Lname, Tname)
+								this.no = no
+							}
+						}
+		
+		// Creating object of GFG class
+		var obj = new GFG("Scala", "Constructor", 4);
+                                                  //> obj  : com.mytut.AuxConstructorDemo.GFG = com.mytut.AuxConstructorDemo$GFG$
+                                                  //| 1@7a79be86
+		obj.show();                       //> Language name: Scala
+                                                  //| Topic name: Constructor
+                                                  //| Total number of articles: 4
+	
+}
+	 
+
+	
+	
