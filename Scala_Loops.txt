@@ -1,0 +1,310 @@
+----------------------------------
+			FOR LOOPS
+------------------------------------
+val nums = Seq(1,2,3)
+you can loop over them and print out their values like this:
+
+for (n <- nums) println(n)
+
+This is what the result looks like in the Scala REPL:
+
+scala> val nums = Seq(1,2,3)
+nums: Seq[Int] = List(1, 2, 3)
+
+scala> for (n <- nums) println(n)
+1
+2
+3
+
+val people = List(
+    "Bill", 
+    "Candy", 
+    "Karen", 
+    "Leo", 
+    "Regina"
+)
+You print its values using a for loop just like the previous example:
+
+for (p <- people) println(p)
+
+The foreach method
+-----------------------
+
+For the purpose of iterating over a collection of elements and printing its contents you can also use the foreach method that’s available to Scala collections classes. For example, this is how you use foreach to print the previous list of strings:
+
+people.foreach(println)
+foreach is available on most collections classes, including sequences, maps, and sets.
+
+val ratings = Map(
+    "Lady in the Water"  -> 3.0, 
+    "Snakes on a Plane"  -> 4.0, 
+    "You, Me and Dupree" -> 3.5
+)
+You can print the movie names and ratings using for like this:
+
+for ((name,rating) <- ratings) println(s"Movie: $name, Rating: $rating")
+
+More Example:
+-------------------
+val names = Seq("chris", "ed", "maurice")
+val nums = Seq(1, 2, 3)
+
+First, a few simple for loops:
+
+for (n <- names) println(n)
+for (n <- names) println(n.capitalize)    
+for (n <- names) {
+    // imagine this requires several lines
+    println(n.capitalize)
+}
+
+Scala for-loop generators with guards
+Here’s one generator with one guard (an if condition), on one line:
+
+for (i <- 1 to 10 if i < 4) println(i)
+
+val nameMap = Map("firstName" -> "Ed", "lastName" -> "Chigliak")
+for ((k,v) <- nameMap) {
+    println(s"key: $k, value: $v")
+}
+
+foreach examples
+You can also use the foreach method on the Scala collections classes:
+
+names.foreach(println)
+names.foreach(e => println(e.toUpperCase))
+names.foreach {
+    // imagine this requires multiple lines
+    e => println(e.toUpperCase)
+}
+
+-------------------- Example:------------
+val range = 1 to 3
+val rangeUntil = 1 until 3
+The keyword to defines a Range from the initial value to the ending one inclusively:
+
+for (num <- range) {
+    println(num)
+}
+And if we ran the above, we’d see:
+
+1
+2
+3
+The keyword until defines the same Range, but without the ending value:
+
+for (num <- rangeUntil) {
+    println(num)
+}
+which gives us a slightly different output:
+
+1
+2
+
+Multiple Generators
+-----------------------
+While in Java we’re forced to write nested loops, at the same time in Scala we can use only one for with multiple generators. We can show this using defined ranges from the previous example:
+
+for {
+    i <- range
+    j <- rangeUntil
+} {
+    println (s"$i, $j")
+}
+This gives us:
+
+1, 1
+1, 2
+2, 1
+2, 2
+3, 1
+3, 2
+
+Guards in a for Loop
+----------------------
+Guard is just a condition we can use inside our for loop.
+
+To filter-out invalid combinations, let’s add a guard to our previous code. We’ll also rewrite the for loop with the use of curly braces for more readability:
+
+for {
+    c1 <- colorList
+    c2 <- colorList
+    if c2 != c1
+    c3 <- colorList
+    if c3 != c2 && c3 != c1
+} {
+    print(s"$c1$c2$c3 ")
+}
+
+for Loops for Map
+-----------------------
+The difference with iterating over a Map is that the receiver will get a Tuple of two values – the key and the value associated with this key:
+
+val map = Map("R" -> "Red", "G" -> "Green", "B" -> "Blue")
+for ((key,value) <- map) {
+    println(s"""$key is for $value""")
+}
+And the result is:
+
+R is for Red
+G is for Green
+B is for Blue
+
+for Loop With yield
+------------------------
+All for loop examples we’ve considered so far just execute a statement in each iteration.
+
+But, whenever we need to transform each element in a collection into something new, we should use a special keyword yield in our for loop.
+
+The syntax of the for loop will become:
+
+val result = for ( generator ) yield {
+    yield_statement
+}
+yield will return a result of a statement execution as a new element of the resulting Collection, and we can use the result of the for loop and store it in a variable.
+
+To demonstrate a for loop with yield, we’ll use a List of numbers:
+
+val numberList = List(1, 2, 3)
+Finally, with the help of a for loop, we will turn this List into the List of Strings:
+
+val equation = for (number <- numberList) yield {
+    s"""$number + $number = ${number + number}"""
+}
+The resulting value is:
+
+equation: List[String] = List(1 + 1 = 2, 2 + 2 = 4, 3 + 3 = 6)
+The variable equation contains a List of Strings, each of which is a result of a running statement.
+
+-------------------------------------------------------------------------
+######################## while and do/while loops#####################
+---------------------------------------------------------------------------
+/ while loop
+while(condition) {
+    statement(a)
+    statement(b)
+}
+
+// do-while
+do {
+   statement(a)
+   statement(b)
+} 
+while(condition)
+
+Here’s an example of a while loop:
+
+var i = 0
+while (i < 3) {
+    println(i)
+    i += 1
+}
+
+Scala do/while loop syntax
+Similarly, here’s an example of a do/while loop:
+
+var i = 0
+do {
+    println(i)
+    i += 1
+}
+while (i < 0)
+
+Notice that the do loop prints 0 even though the test condition immediately fails. 
+This is how a do/while loop works: it runs its loop before it runs its first test.
+
+---------------------------------------------------------------------------
+####################### THE IF/THEN/ELSE CONSTRUCT #######################
+---------------------------------------------------------------------------
+
+A basic Scala if statement looks like this:
+
+if (a == b) doSomething()
+You can also write that statement like this:
+
+if (a == b) {
+    doSomething()
+}
+The if/else construct looks like this:
+
+if (a == b) {
+    doSomething()
+} else {
+    doSomethingElse()
+}
+The complete Scala if/else-if/else expression looks like this:
+
+if (test1) {
+    doX()
+} else if (test2) {
+    doY()
+} else {
+    doZ()
+}
+
+---------------------------------------------------------------------------
+###############Scala for/yield examples (for-loop and yield syntax) ####
+---------------------------------------------------------------------------
+For each iteration of your for loop, yield generates a value which will be remembered. 
+It's like the for loop has a buffer you can’t see, and for each iteration of your for loop another item is added to that buffer. 
+When your for loop finishes running, it will return this collection of all the yielded values. 
+The type of the collection that is returned is the same type that you were iterating over, so a Map yields a Map, a List yields a List, and so on.
+
+scala> for (i <- 1 to 5) yield i
+
+scala> for (i <- 1 to 5) yield i * 2
+
+cala> val a = Array(1, 2, 3, 4, 5)
+a: Array[Int] = Array(1, 2, 3, 4, 5)
+
+scala> for (e <- a) yield e
+res5: Array[Int] = Array(1, 2, 3, 4, 5)
+
+scala> for (e <- a) yield e * 2
+res6: Array[Int] = Array(2, 4, 6, 8, 10)
+
+scala> for (e <- a) yield e % 2
+res7: Array[Int] = Array(1, 0, 1, 0, 1)
+
+scala> val names = Array("chris", "ed", "maurice")
+names: Array[String] = Array(chris, ed, maurice)
+you can create a new array of capitalized strings by combining yield with a for loop and a simple algorithm:
+
+scala> val capNames = for (e <- names) yield e.capitalize
+capNames: Array[String] = Array(Chris, Ed, Maurice)
+Using a for loop with a yield statement is known as a for comprehension.
+
+If your algorithm requires multiple lines of code, perform the work in a block after the yield keyword:
+
+scala> val lengths = for (e <- names) yield {
+     |   // imagine that this required multiple lines of code
+     |   e.length
+     | }
+lengths: Array[Int] = Array(5, 2, 7)
+
+var fruits = scala.collection.mutable.ArrayBuffer[String]()
+fruits += "apple"
+fruits += "banana"
+fruits += "orange"
+the collection your loop returns will also be an ArrayBuffer:
+
+scala> val out = for (e <- fruits) yield e.toUpperCase
+
+
+As a quick summary of the yield keyword:
+
+>	For each iteration of your for loop, yield generates a value which is remembered by the for loop (behind the scenes, like a buffer).
+>	When your for loop finishes running, it returns a collection of all these yielded values.
+>	The type of the collection that is returned is the same type that you were iterating over.
+
+---------------------------------------------------------------------
+##################### Generate Number: ##############################
+---------------------------------------------------------------------
+val abc=1 to 10 by 2
+
+or 
+
+val aaa=Range(1,10)
+
+
+
